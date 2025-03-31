@@ -23,6 +23,11 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
+      "quotes": ["error", "single"], // simple quotes
+      "semi": ["error", "always"], // semicolon
+      "comma-dangle": "off", // final obj and arr with comma
+      "comma-spacing": "error", // space arround commas
+      "space-infix-ops": "error" // space arround operators
     },
   },
 )
