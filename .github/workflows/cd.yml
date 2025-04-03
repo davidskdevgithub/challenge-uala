@@ -2,7 +2,7 @@ name: Continuous Deployment
 
 on:
   workflow_run:
-    workflows: ["Continuous Integration"]
+    workflows: ['Continuous Integration']
     types:
       - completed
 
@@ -35,18 +35,18 @@ jobs:
             echo "is_pr=false" >> $GITHUB_OUTPUT
             echo "pr_number=0" >> $GITHUB_OUTPUT
           fi
-          
+
           echo "Event type: ${{ github.event.workflow_run.event }}"
           echo "PR status: $(cat $GITHUB_OUTPUT | grep is_pr)"
           echo "PR number: $(cat $GITHUB_OUTPUT | grep pr_number)"
-          
+
       - name: Check if workflow ran on master branch
         id: check-branch
         run: |
           BRANCH_NAME="${{ github.event.workflow_run.head_branch }}"
-          
+
           echo "Branch name: $BRANCH_NAME"
-          
+
           if [ "$BRANCH_NAME" == "master" ]; then
             echo "is_master=true" >> $GITHUB_OUTPUT
           else
