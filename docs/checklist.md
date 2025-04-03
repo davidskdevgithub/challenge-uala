@@ -1,6 +1,7 @@
 ## Checks
 
 - Configuration
+
   - [ ] Create Vite app
   - [ ] Push repo to GitHub
   - [ ] Create a new project on Vercel

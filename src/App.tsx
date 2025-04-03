@@ -10,7 +10,7 @@ function App() {
 
   return (
     <>
-      <div className='flex items-center justify-center'>
+      <div className="flex items-center justify-center">
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
         </a>
@@ -20,7 +20,7 @@ function App() {
       </div>
       <h1 className="text-3xl font-bold underline">Vite + React</h1>
       <div className="card">
-        <Button onClick={() => setCount((count) => count + 1)}>
+        <Button onClick={() => setCount(count => count + 1)}>
           count is {count}
         </Button>
         <p>

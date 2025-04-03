@@ -1,0 +1,13 @@
+# Ignore artifacts:
+dist
+node_modules
+pnpm-lock.yaml
+
+# Ignore all HTML files:
+*.html
+
+# Ignore build output
+build
+
+# Ignore coverage reports
+coverage
