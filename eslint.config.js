@@ -1,13 +1,19 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
+import prettierPlugin from 'eslint-plugin-prettier';
+import prettierConfig from 'eslint-config-prettier';
 
 export default tseslint.config(
   { ignores: ['dist'] },
   {
-    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    extends: [
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      prettierConfig,
+    ],
     files: ['**/*.{ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2020,
@@ -16,6 +22,7 @@ export default tseslint.config(
     plugins: {
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
+      prettier: prettierPlugin,
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -23,11 +30,13 @@ export default tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-      "quotes": ["error", "single"], // simple quotes
-      "semi": ["error", "always"], // semicolon
-      "comma-dangle": "off", // final obj and arr with comma
-      "comma-spacing": "error", // space arround commas
-      "space-infix-ops": "error" // space arround operators
+      'prettier/prettier': 'error',
+      // ESLint rules that might conflict with Prettier are disabled
+      quotes: 'off',
+      semi: 'off',
+      'comma-dangle': 'off',
+      'comma-spacing': 'off',
+      'space-infix-ops': 'off',
     },
   },
-)
+);
