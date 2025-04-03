@@ -27,19 +27,29 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
         <IconStore />
       </div>
       <div className="flex-grow flex flex-col gap-1">
-        <p className="font-semibold text-neutral-hard">
+        <p
+          className="font-semibold text-neutral-hard"
+          data-testid="payment-method"
+        >
           {labelsPaymentMethod[paymentMethodValue]}
         </p>
-        <p className="text-neutral">{category}</p>
+        <p className="text-neutral" data-testid="category">
+          {category}
+        </p>
       </div>
       <div className="text-right flex flex-col gap-1">
         <p
           className="font-semibold text-success"
           aria-label={`Amount: ${formattedAmount} pesos`}
+          data-testid="amount"
         >
           +${formattedAmount}
         </p>
-        <p className="text-neutral" aria-label={`Date: ${formattedDate}`}>
+        <p
+          className="text-neutral"
+          aria-label={`Date: ${formattedDate}`}
+          data-testid="date"
+        >
           {formattedDate}
         </p>
       </div>
