@@ -5,7 +5,7 @@ import { labelsPaymentMethod } from '../utils/transactions.labels';
 import { formatCurrencyToEs } from '@/formatters/format-currency';
 import { formatDateToEs } from '@/formatters/format-date';
 
-interface TransactionItemProps {
+export interface TransactionItemProps {
   paymentMethodValue: PaymentMethodValue;
   category: string;
   amount: number;

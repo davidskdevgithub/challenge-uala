@@ -30,3 +30,11 @@ export interface Transaction {
   updatedAt: string;
   paymentMethod: PaymentMethodValue;
 }
+
+export interface TransactionsResponse {
+  metadata: {
+    paymentMethods: PaymentMethod[];
+    cards: Card[];
+  };
+  transactions: Transaction[];
+}
