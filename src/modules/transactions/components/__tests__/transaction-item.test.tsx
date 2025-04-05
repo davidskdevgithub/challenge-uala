@@ -9,7 +9,11 @@ vi.mock('@/components/icons/icon-store', () => ({
 }));
 
 vi.mock('@/formatters/format-currency', () => ({
-  formatCurrencyToEs: (amount: number) => `${amount.toFixed(2)}`,
+  formatCurrencyToEs: (amount: number) => ({
+    full: `${amount.toFixed(2)}`,
+    entera: `${Math.floor(amount)}`,
+    decimal: `${(amount % 1).toFixed(2).substring(2)}`,
+  }),
 }));
 
 vi.mock('@/formatters/format-date', () => ({

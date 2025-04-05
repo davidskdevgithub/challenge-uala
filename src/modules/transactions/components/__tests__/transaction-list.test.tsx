@@ -1,16 +1,8 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { TransactionList } from '../transaction-list';
 import { TransactionItemProps } from '../transaction-item';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// Create a mock function for useTransactions
-const mockUseTransactions = vi.fn();
-
-// Mock the useTransactions hook
-vi.mock('../../hooks/useTransactions', () => ({
-  useTransactions: () => mockUseTransactions(),
-}));
+import { mockTransactions } from '../../transactions.mocks';
 
 // Mock the TransactionItem component
 vi.mock('../transaction-item', () => ({
@@ -29,71 +21,49 @@ vi.mock('../transaction-item', () => ({
   ),
 }));
 
-// Create a wrapper with QueryClientProvider
-const createWrapper = () => {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-      },
-    },
-  });
-
-  return ({ children }: { children: React.ReactNode }) => (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
-  );
-};
-
 describe('TransactionList', () => {
-  beforeEach(() => {
-    // Reset all mocks before each test
-    vi.resetAllMocks();
-
-    // Default mock implementation
-    mockUseTransactions.mockReturnValue({
-      transactions: [
-        {
-          id: '1',
-          paymentMethod: 'link',
-          amount: 1500,
-          createdAt: '2025-01-01T12:00:00Z',
-        },
-        {
-          id: '2',
-          paymentMethod: 'cash',
-          amount: 2000,
-          createdAt: '2025-01-02T12:00:00Z',
-        },
-      ],
-      isLoading: false,
-      error: null,
-    });
-  });
-
   it('renders the transaction list with correct heading', () => {
-    render(<TransactionList />, { wrapper: createWrapper() });
+    render(
+      <TransactionList
+        transactions={mockTransactions}
+        isLoading={false}
+        error={null}
+      />,
+    );
 
     const heading = screen.getByTestId('transactions-heading');
     expect(heading.textContent).toBe('Historial de Transacciones');
   });
 
   it('renders the correct number of transaction items', () => {
-    render(<TransactionList />, { wrapper: createWrapper() });
+    render(
+      <TransactionList
+        transactions={mockTransactions}
+        isLoading={false}
+        error={null}
+      />,
+    );
 
     const transactionListItems = screen.getAllByTestId('transaction-list-item');
-    expect(transactionListItems.length).toBe(2);
+    expect(transactionListItems.length).toBe(3);
   });
 
   it('passes correct props to TransactionItem components', () => {
-    render(<TransactionList />, { wrapper: createWrapper() });
+    render(
+      <TransactionList
+        transactions={mockTransactions}
+        isLoading={false}
+        error={null}
+      />,
+    );
 
     const paymentMethods = screen.getAllByTestId('payment-method');
     expect(paymentMethods[0].textContent).toBe('link');
-    expect(paymentMethods[1].textContent).toBe('cash');
+    expect(paymentMethods[1].textContent).toBe('mpos');
 
     const amounts = screen.getAllByTestId('amount');
-    expect(amounts[0].textContent).toBe('1500');
-    expect(amounts[1].textContent).toBe('2000');
+    expect(amounts[0].textContent).toBe('1393.71');
+    expect(amounts[1].textContent).toBe('1393.13');
 
     const categories = screen.getAllByTestId('category');
     categories.forEach(category => {
@@ -102,28 +72,20 @@ describe('TransactionList', () => {
   });
 
   it('shows loading state when isLoading is true', () => {
-    // Override the mock for this specific test
-    mockUseTransactions.mockReturnValue({
-      transactions: [],
-      isLoading: true,
-      error: null,
-    });
-
-    render(<TransactionList />, { wrapper: createWrapper() });
+    render(<TransactionList transactions={[]} isLoading={true} error={null} />);
 
     const loadingElement = screen.getByTestId('loading-state');
     expect(loadingElement.textContent).toBe('Loading...');
   });
 
   it('shows error state when there is an error', () => {
-    // Override the mock for this specific test
-    mockUseTransactions.mockReturnValue({
-      transactions: [],
-      isLoading: false,
-      error: new Error('Failed to fetch transactions'),
-    });
-
-    render(<TransactionList />, { wrapper: createWrapper() });
+    render(
+      <TransactionList
+        transactions={[]}
+        isLoading={false}
+        error={new Error('Failed to fetch transactions')}
+      />,
+    );
 
     const errorElement = screen.getByTestId('error-state');
     expect(errorElement.textContent).toBe(
@@ -132,7 +94,13 @@ describe('TransactionList', () => {
   });
 
   it('renders the transactions section with proper structure', () => {
-    render(<TransactionList />, { wrapper: createWrapper() });
+    render(
+      <TransactionList
+        transactions={mockTransactions}
+        isLoading={false}
+        error={null}
+      />,
+    );
 
     const section = screen.getByTestId('transactions-section');
     expect(section).toBeDefined();

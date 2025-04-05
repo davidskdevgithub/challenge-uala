@@ -1,11 +1,19 @@
 import { useMemo } from 'react';
 
 import { TransactionItem } from './transaction-item';
-import { useTransactions } from '../hooks/useTransactions';
+import { Transaction } from '../transactions.types';
 
-export const TransactionList = () => {
-  const { transactions, isLoading, error } = useTransactions();
+interface TransactionListProps {
+  transactions: Transaction[];
+  isLoading: boolean;
+  error: Error | null;
+}
 
+export const TransactionList: React.FC<TransactionListProps> = ({
+  transactions,
+  isLoading,
+  error,
+}) => {
   const MemoizedTransactions = useMemo(() => {
     return transactions.map(transaction => (
       <li key={transaction.id} data-testid="transaction-list-item">

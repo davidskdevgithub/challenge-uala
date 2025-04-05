@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import {
   useTransactionsStore,
   TransactionsState,
 } from '../store/transactions-store';
 import { useQueryTransactions } from './useQueryTransactions';
+import { Periods } from '../transactions.types';
 
 export const useTransactions = () => {
   const isInitialized = useTransactionsStore(
@@ -15,7 +17,9 @@ export const useTransactions = () => {
     state.getAllTransactions(),
   );
 
-  const { isLoading, error } = useQueryTransactions({
+  const [activePeriod, setActivePeriod] = useState<Periods>(Periods.WEEKLY);
+
+  const { isLoading, error, refetch } = useQueryTransactions({
     enabled: !isInitialized,
     onSuccess: data => {
       if (data) setAllData(data);
@@ -24,7 +28,12 @@ export const useTransactions = () => {
 
   return {
     transactions,
+
     isLoading: isLoading || !isInitialized,
     error,
+    refetch,
+
+    activePeriod,
+    setActivePeriod,
   };
 };
