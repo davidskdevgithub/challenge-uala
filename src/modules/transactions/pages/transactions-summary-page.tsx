@@ -3,8 +3,14 @@ import { TransactionList } from '../components/transaction-list';
 import { useTransactions } from '../hooks/useTransactions';
 
 export const TransactionsSummaryPage = () => {
-  const { transactions, isLoading, error, activePeriod, setActivePeriod } =
-    useTransactions();
+  const {
+    transactions,
+    totalAmount,
+    isLoading,
+    error,
+    activePeriod,
+    setActivePeriod,
+  } = useTransactions();
 
   return (
     <main
@@ -14,7 +20,7 @@ export const TransactionsSummaryPage = () => {
       <TransaccionTotalPeriod
         activePeriod={activePeriod}
         onChangeActivePeriod={setActivePeriod}
-        totalAmount={35000}
+        totalAmount={totalAmount}
         isLoading={isLoading}
         error={error}
       />

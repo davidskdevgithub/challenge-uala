@@ -21,6 +21,7 @@ vi.mock('../../hooks/useTransactions', () => ({
         createdAt: '2025-01-02T12:00:00Z',
       },
     ],
+    totalAmount: 3500,
     isLoading: false,
     error: null,
     activePeriod: Periods.WEEKLY,
@@ -89,7 +90,7 @@ describe('TransactionsSummaryPage', () => {
     expect(activePeriod.textContent).toBe(Periods.WEEKLY);
 
     const totalAmount = screen.getByTestId('total-amount');
-    expect(totalAmount.textContent).toBe('35000');
+    expect(totalAmount.textContent).toBe('3500');
   });
 
   it('renders the TransactionList component with correct props', () => {

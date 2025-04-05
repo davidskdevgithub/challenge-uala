@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import {
   useTransactionsStore,
   TransactionsState,
 } from '../store/transactions-store';
 import { useQueryTransactions } from './useQueryTransactions';
 import { Periods } from '../transactions.types';
+import { getTransactionsTotalByPeriod } from '../utils/transactions.period';
 
 export const useTransactions = () => {
   const isInitialized = useTransactionsStore(
@@ -26,8 +27,18 @@ export const useTransactions = () => {
     },
   });
 
+  const totalAmount = useMemo(() => {
+    const transactionsByPeriod =
+      getTransactionsTotalByPeriod[activePeriod](transactions);
+
+    return transactionsByPeriod.reduce((acc, transaction) => {
+      return acc + transaction.amount;
+    }, 0);
+  }, [transactions, activePeriod]);
+
   return {
     transactions,
+    totalAmount,
 
     isLoading: isLoading || !isInitialized,
     error,
