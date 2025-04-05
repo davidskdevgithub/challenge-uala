@@ -18,7 +18,7 @@ export const TransactionItem: React.FC<TransactionItemProps> = ({
   amount,
   createdAt,
 }) => {
-  const formattedAmount = formatCurrencyToEs(amount);
+  const { full: formattedAmount } = formatCurrencyToEs(amount);
   const formattedDate = formatDateToEs(createdAt);
 
   return (

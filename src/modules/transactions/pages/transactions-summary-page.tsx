@@ -1,9 +1,28 @@
+import { TransaccionTotalPeriod } from '../components/transaction-totals-period';
 import { TransactionList } from '../components/transaction-list';
+import { useTransactions } from '../hooks/useTransactions';
 
 export const TransactionsSummaryPage = () => {
+  const { transactions, isLoading, error, activePeriod, setActivePeriod } =
+    useTransactions();
+
   return (
-    <main className="container w-md mx-auto" tabIndex={-1}>
-      <TransactionList />
+    <main
+      className="container w-md mx-auto flex flex-col items-stretch gap-8"
+      tabIndex={-1}
+    >
+      <TransaccionTotalPeriod
+        activePeriod={activePeriod}
+        onChangeActivePeriod={setActivePeriod}
+        totalAmount={35000}
+        isLoading={isLoading}
+        error={error}
+      />
+      <TransactionList
+        transactions={transactions}
+        isLoading={isLoading}
+        error={error}
+      />
     </main>
   );
 };

@@ -38,3 +38,9 @@ export interface TransactionsResponse {
   };
   transactions: Transaction[];
 }
+
+export enum Periods {
+  DAILY = 'daily',
+  WEEKLY = 'weekly',
+  MONTHLY = 'monthly',
+}
