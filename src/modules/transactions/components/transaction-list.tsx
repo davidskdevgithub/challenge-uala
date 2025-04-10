@@ -3,6 +3,10 @@ import { useMemo } from 'react';
 import { TransactionItem } from './transaction-item';
 import { Transaction } from '../transactions.types';
 
+import IconDownload from '@/components/icons/icon-download';
+
+import { FiltersDrawer } from '../filters/components/filters-drawer';
+
 interface TransactionListProps {
   transactions: Transaction[];
   isLoading: boolean;
@@ -40,13 +44,23 @@ export const TransactionList: React.FC<TransactionListProps> = ({
       aria-labelledby="transactions-heading"
       data-testid="transactions-section"
     >
-      <h2
-        id="transactions-heading"
-        className="pl-2"
-        data-testid="transactions-heading"
-      >
-        Historial de Transacciones
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2
+          id="transactions-heading"
+          className="pl-2 text-sm font-semibold text-neutral-hard"
+          data-testid="transactions-heading"
+        >
+          Historial de Transacciones
+        </h2>
+        <div className="flex gap-2">
+          <div className="w-12 h-12 flex items-center justify-center">
+            <FiltersDrawer />
+          </div>
+          <div className="w-12 h-12 flex items-center justify-center">
+            <IconDownload />
+          </div>
+        </div>
+      </div>
       <ul
         className="flex flex-col divide-y divide-neutral-border list-none p-0 mt-2 mx-0 mb-0"
         role="list"
