@@ -5,8 +5,10 @@
   --color-neutral-hard: #313643;
   --color-neutral: #606882;
   --color-neutral-border: #dee2ec;
+  --color-neutral-disabled: #B7BFD3;
   --color-success: #1c8367;
   --color-primary-blue: #022a9a;
+  --color-primary-blue-light: #E7EEFF;
 }
 
 @custom-variant dark (&:is(.dark *));
