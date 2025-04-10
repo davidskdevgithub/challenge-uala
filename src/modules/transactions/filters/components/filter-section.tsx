@@ -31,18 +31,35 @@ export function FilterSection({
     'file-text': FileText,
   }[icon];
 
+  const sectionId = `filter-section-${title.toLowerCase().replace(/\s+/g, '-')}`;
+
   return (
-    <div className="h-auto min-h-12 flex flex-col justify-center">
+    <section
+      className="h-auto min-h-12 flex flex-col justify-center"
+      aria-labelledby={`${sectionId}-heading`}
+    >
       <div className="h-12 flex items-center justify-between py-2 pl-2 pr-4">
         <div className="flex items-center gap-2">
-          <IconComponent className="h-5 w-5 text-gray-500" />
-          <span className="text-sm font-semibold text-neutral-hard">
+          <IconComponent className="h-5 w-5 text-gray-500" aria-hidden="true" />
+          <h3
+            id={`${sectionId}-heading`}
+            className="text-sm font-semibold text-neutral-hard m-0"
+          >
             {title}
-          </span>
+          </h3>
         </div>
-        <Switch checked={checked} onCheckedChange={onCheckedChange} />
+        <Switch
+          checked={checked}
+          onCheckedChange={onCheckedChange}
+          id={`${sectionId}-switch`}
+          aria-labelledby={`${sectionId}-heading`}
+          aria-controls={`${sectionId}-content`}
+          aria-expanded={checked}
+        />
       </div>
-      {children}
-    </div>
+      <div id={`${sectionId}-content`} aria-hidden={!checked}>
+        {children}
+      </div>
+    </section>
   );
 }

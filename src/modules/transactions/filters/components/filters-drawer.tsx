@@ -28,17 +28,30 @@ export const FiltersDrawer = () => {
 
   return (
     <Drawer direction="right" handleOnly open={isOpen} onOpenChange={setIsOpen}>
-      <DrawerTrigger>
-        <IconFilter />
+      <DrawerTrigger asChild>
+        <button
+          aria-label="Open filters"
+          className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue"
+        >
+          <IconFilter className="w-auto h-auto" aria-hidden="true" />
+        </button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent aria-labelledby="filters-title">
         <div className="mx-auto w-full max-w-md h-full flex flex-col">
           <DrawerHeader className="px-4 py-12">
             <div className="flex items-center gap-4">
-              <DrawerClose>
-                <ChevronLeft className="h-5 w-5" />
+              <DrawerClose asChild>
+                <button
+                  aria-label="Close filters"
+                  className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue"
+                >
+                  <ChevronLeft className="h-5 w-5" aria-hidden="true" />
+                </button>
               </DrawerClose>
-              <DrawerTitle className="text-base font-semibold text-neutral-dark">
+              <DrawerTitle
+                id="filters-title"
+                className="text-base font-semibold text-neutral-dark"
+              >
                 Filtros
               </DrawerTitle>
             </div>
@@ -52,12 +65,17 @@ export const FiltersDrawer = () => {
               <Button
                 variant="link"
                 className="font-light text-primary-blue text-base"
+                aria-label="Clear all filters"
               >
                 Limpiar
               </Button>
             </div>
 
-            <div className="flex flex-col items-stretch">
+            <div
+              className="flex flex-col items-stretch"
+              role="group"
+              aria-label="Filter options"
+            >
               <FilterSection
                 icon="credit-card"
                 title="Tarjeta"
@@ -80,10 +98,25 @@ export const FiltersDrawer = () => {
                                   : 'bg-white border hover:bg-gray-100'
                               }
                             `}
+                            role="button"
+                            aria-pressed={isSelected}
+                            tabIndex={0}
+                            onClick={() => {
+                              /* Add toggle selection handler */
+                            }}
+                            onKeyDown={e => {
+                              if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                // Add toggle selection handler
+                              }
+                            }}
                           >
                             {label}
                             {isSelected && (
-                              <X className="h-3 w-3 ml-1 inline" />
+                              <X
+                                className="h-3 w-3 ml-1 inline"
+                                aria-hidden="true"
+                              />
                             )}
                           </Badge>
                         );
@@ -99,6 +132,7 @@ export const FiltersDrawer = () => {
             <Button
               className="rounded-3xl h-12 text-base"
               onClick={handleApplyFilters}
+              aria-label="Apply filters and close"
             >
               Aplicar filtros
             </Button>

@@ -52,12 +52,17 @@ export const TransactionList: React.FC<TransactionListProps> = ({
         >
           Historial de Transacciones
         </h2>
-        <div className="flex gap-2">
+        <div className="flex gap-2" aria-label="Transaction actions">
           <div className="w-12 h-12 flex items-center justify-center">
             <FiltersDrawer />
           </div>
           <div className="w-12 h-12 flex items-center justify-center">
-            <IconDownload />
+            <button
+              aria-label="Download transactions"
+              className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue"
+            >
+              <IconDownload aria-hidden="true" />
+            </button>
           </div>
         </div>
       </div>
