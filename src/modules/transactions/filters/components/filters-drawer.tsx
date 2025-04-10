@@ -10,12 +10,17 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 import IconFilter from '@/components/icons/icon-filter';
-import { ChevronLeft } from 'lucide-react';
+import { ChevronLeft, X } from 'lucide-react';
+
+import { FilterSection } from './filter-section';
+import { mockFilterCardOptions } from '../filters.mocks';
 
 export const FiltersDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [testChecked, setTestChecked] = useState(false);
 
   const handleApplyFilters = () => {
     setIsOpen(false);
@@ -50,6 +55,43 @@ export const FiltersDrawer = () => {
               >
                 Limpiar
               </Button>
+            </div>
+
+            <div className="flex flex-col items-stretch">
+              <FilterSection
+                icon="credit-card"
+                title="Tarjeta"
+                checked={testChecked}
+                onCheckedChange={checked => setTestChecked(checked)}
+              >
+                {testChecked && (
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {mockFilterCardOptions.map(
+                      ({ value, label, isSelected }) => {
+                        return (
+                          <Badge
+                            key={value}
+                            variant={isSelected ? 'default' : 'outline'}
+                            className={`
+                              rounded-full px-4 py-1.5 cursor-pointer
+                              ${
+                                isSelected
+                                  ? 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'
+                                  : 'bg-white border hover:bg-gray-100'
+                              }
+                            `}
+                          >
+                            {label}
+                            {isSelected && (
+                              <X className="h-3 w-3 ml-1 inline" />
+                            )}
+                          </Badge>
+                        );
+                      },
+                    )}
+                  </div>
+                )}
+              </FilterSection>
             </div>
           </div>
 
