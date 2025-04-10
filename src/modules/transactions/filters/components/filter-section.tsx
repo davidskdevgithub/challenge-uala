@@ -37,13 +37,25 @@ export function FilterSection({
     <section
       className="h-auto min-h-12 flex flex-col justify-center"
       aria-labelledby={`${sectionId}-heading`}
+      data-testid={sectionId}
     >
-      <div className="h-12 flex items-center justify-between py-2 pl-2 pr-4">
-        <div className="flex items-center gap-2">
-          <IconComponent className="h-5 w-5 text-gray-500" aria-hidden="true" />
+      <div
+        className="h-12 flex items-center justify-between py-2 pl-2 pr-4"
+        data-testid="filter-section-header"
+      >
+        <div
+          className="flex items-center gap-2"
+          data-testid="filter-section-title-container"
+        >
+          <IconComponent
+            className="h-5 w-5 text-gray-500"
+            aria-hidden="true"
+            data-testid={`${sectionId}-icon`}
+          />
           <h3
             id={`${sectionId}-heading`}
             className="text-sm font-semibold text-neutral-hard m-0"
+            data-testid={`${sectionId}-heading`}
           >
             {title}
           </h3>
@@ -55,9 +67,14 @@ export function FilterSection({
           aria-labelledby={`${sectionId}-heading`}
           aria-controls={`${sectionId}-content`}
           aria-expanded={checked}
+          data-testid={`${sectionId}-switch`}
         />
       </div>
-      <div id={`${sectionId}-content`} aria-hidden={!checked}>
+      <div
+        id={`${sectionId}-content`}
+        aria-hidden={!checked}
+        data-testid={`${sectionId}-content`}
+      >
         {children}
       </div>
     </section>

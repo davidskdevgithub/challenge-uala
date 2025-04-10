@@ -27,23 +27,37 @@ export const FiltersDrawer = () => {
   };
 
   return (
-    <Drawer direction="right" handleOnly open={isOpen} onOpenChange={setIsOpen}>
+    <Drawer
+      direction="right"
+      handleOnly
+      open={isOpen}
+      onOpenChange={setIsOpen}
+      data-testid="filters-drawer"
+    >
       <DrawerTrigger asChild>
         <button
           aria-label="Open filters"
           className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue"
+          data-testid="filter-button"
         >
           <IconFilter className="w-auto h-auto" aria-hidden="true" />
         </button>
       </DrawerTrigger>
-      <DrawerContent aria-labelledby="filters-title">
-        <div className="mx-auto w-full max-w-md h-full flex flex-col">
+      <DrawerContent
+        aria-labelledby="filters-title"
+        data-testid="drawer-content"
+      >
+        <div
+          className="mx-auto w-full max-w-md h-full flex flex-col"
+          data-testid="drawer-container"
+        >
           <DrawerHeader className="px-4 py-12">
             <div className="flex items-center gap-4">
               <DrawerClose asChild>
                 <button
                   aria-label="Close filters"
                   className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue"
+                  data-testid="close-button"
                 >
                   <ChevronLeft className="h-5 w-5" aria-hidden="true" />
                 </button>
@@ -51,21 +65,29 @@ export const FiltersDrawer = () => {
               <DrawerTitle
                 id="filters-title"
                 className="text-base font-semibold text-neutral-dark"
+                data-testid="drawer-title"
               >
                 Filtros
               </DrawerTitle>
             </div>
           </DrawerHeader>
 
-          <div className="p-4 pb-0 overflow-y-auto">
+          <div
+            className="p-4 pb-0 overflow-y-auto"
+            data-testid="filters-content"
+          >
             <div className="h-12 flex justify-between items-center mb-2">
-              <h2 className="font-semibold text-neutral-dark text-base">
+              <h2
+                className="font-semibold text-neutral-dark text-base"
+                data-testid="filters-heading"
+              >
                 Todos los filtros
               </h2>
               <Button
                 variant="link"
                 className="font-light text-primary-blue text-base"
                 aria-label="Clear all filters"
+                data-testid="clear-filters-button"
               >
                 Limpiar
               </Button>
@@ -75,15 +97,20 @@ export const FiltersDrawer = () => {
               className="flex flex-col items-stretch"
               role="group"
               aria-label="Filter options"
+              data-testid="filter-options-group"
             >
               <FilterSection
                 icon="credit-card"
                 title="Tarjeta"
                 checked={testChecked}
                 onCheckedChange={checked => setTestChecked(checked)}
+                data-testid="card-filter-section"
               >
                 {testChecked && (
-                  <div className="flex flex-wrap gap-2 mb-4">
+                  <div
+                    className="flex flex-wrap gap-2 mb-4"
+                    data-testid="card-options-container"
+                  >
                     {mockFilterCardOptions.map(
                       ({ value, label, isSelected }) => {
                         return (
@@ -110,6 +137,7 @@ export const FiltersDrawer = () => {
                                 // Add toggle selection handler
                               }
                             }}
+                            data-testid={`card-option-${value}`}
                           >
                             {label}
                             {isSelected && (
@@ -133,6 +161,7 @@ export const FiltersDrawer = () => {
               className="rounded-3xl h-12 text-base"
               onClick={handleApplyFilters}
               aria-label="Apply filters and close"
+              data-testid="apply-filters-button"
             >
               Aplicar filtros
             </Button>
