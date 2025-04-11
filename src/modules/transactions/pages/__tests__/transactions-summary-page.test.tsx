@@ -1,33 +1,8 @@
-import { describe, it, expect, vi } from 'vitest';
+import { describe, it, expect, vi, beforeAll, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { TransactionsSummaryPage } from '../transactions-summary-page';
 import { Periods } from '../../transactions.types';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-// Mock the useTransactions hook
-vi.mock('../../hooks/useTransactions', () => ({
-  useTransactions: () => ({
-    transactions: [
-      {
-        id: '1',
-        paymentMethod: 'link',
-        amount: 1500,
-        createdAt: '2025-01-01T12:00:00Z',
-      },
-      {
-        id: '2',
-        paymentMethod: 'cash',
-        amount: 2000,
-        createdAt: '2025-01-02T12:00:00Z',
-      },
-    ],
-    totalAmount: 3500,
-    isLoading: false,
-    error: null,
-    activePeriod: Periods.WEEKLY,
-    setActivePeriod: vi.fn(),
-  }),
-}));
+import * as useTransactionsModule from '../../hooks/useTransactions';
 
 // Mock the TransaccionTotalPeriod component
 vi.mock('../../components/transaction-totals-period', () => ({
@@ -72,6 +47,60 @@ const createWrapper = () => {
 };
 
 describe('TransactionsSummaryPage', () => {
+  let TransactionsSummaryPage: React.ComponentType;
+  let useTransactionsSpy: ReturnType<typeof vi.spyOn>; // Declare the spy with Vitest type
+  const defaultTransactions = {
+    transactions: [
+      {
+        id: '1',
+        paymentMethod: 'link',
+        amount: 1500,
+        createdAt: '2025-01-01T12:00:00Z',
+      },
+      {
+        id: '2',
+        paymentMethod: 'cash',
+        amount: 2000,
+        createdAt: '2025-01-02T12:00:00Z',
+      },
+    ],
+    transactionsFiltered: [
+      {
+        id: '1',
+        paymentMethod: 'link',
+        amount: 1500,
+        createdAt: '2025-01-01T12:00:00Z',
+      },
+      {
+        id: '2',
+        paymentMethod: 'cash',
+        amount: 2000,
+        createdAt: '2025-01-02T12:00:00Z',
+      },
+    ],
+    totalAmount: 3500,
+    isLoading: false,
+    error: null,
+    activePeriod: Periods.WEEKLY,
+    setActivePeriod: vi.fn(),
+  };
+
+  beforeAll(async () => {
+    //Import component
+    const module = await import('../transactions-summary-page');
+    TransactionsSummaryPage = module.TransactionsSummaryPage;
+  });
+
+  beforeEach(() => {
+    vi.clearAllMocks(); // Clear mocks before each test
+
+    // Spy on the useTransactions hook
+    useTransactionsSpy = vi.spyOn(useTransactionsModule, 'useTransactions');
+
+    // Set the default return value for the spy
+    useTransactionsSpy.mockReturnValue(defaultTransactions);
+  });
+
   it('renders the main container with correct attributes', () => {
     render(<TransactionsSummaryPage />, { wrapper: createWrapper() });
 
@@ -107,5 +136,46 @@ describe('TransactionsSummaryPage', () => {
 
     const hasError = screen.getByTestId('has-error');
     expect(hasError.textContent).toBe('false');
+  });
+
+  it('renders filtered transactions correctly', () => {
+    // Override the mock for this test
+    useTransactionsSpy.mockReturnValue({
+      transactions: [
+        {
+          id: '1',
+          paymentMethod: 'link',
+          amount: 1500,
+          createdAt: '2025-01-01T12:00:00Z',
+        },
+        {
+          id: '2',
+          paymentMethod: 'cash',
+          amount: 2000,
+          createdAt: '2025-01-02T12:00:00Z',
+        },
+      ],
+      transactionsFiltered: [
+        {
+          id: '1',
+          paymentMethod: 'link',
+          amount: 1500,
+          createdAt: '2025-01-01T12:00:00Z',
+        },
+      ],
+      totalAmount: 1500, // Corrected total amount
+      isLoading: false,
+      error: null,
+      activePeriod: Periods.WEEKLY,
+      setActivePeriod: vi.fn(),
+    });
+
+    render(<TransactionsSummaryPage />, { wrapper: createWrapper() });
+
+    const transactionList = screen.getByTestId('transaction-list');
+    expect(transactionList).toBeDefined();
+
+    const transactionsCount = screen.getByTestId('transactions-count');
+    expect(transactionsCount.textContent).toBe('1'); // Only one transaction after filtering
   });
 });
