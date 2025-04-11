@@ -1,15 +1,19 @@
 import { CardValue } from '../transactions.types';
+import { DateRange } from 'react-day-picker';
 
 export enum FilterType {
+  DATE = 'date',
   CARD = 'card',
-  // DATE = 'date',
   // AMOUNT = 'amount',
   // INSTALLMENTS = 'installments',
   // PAYMENT_METHOD = 'paymentMethod',
 }
 
+export type FilterValues = DateRange | CardValue;
+
 export interface FiltersStore {
-  [FilterType.CARD]?: CardValue[];
+  [FilterType.DATE]?: FilterValues[];
+  [FilterType.CARD]?: FilterValues[];
 }
 
 export interface FilterChipOption<T> {
@@ -19,6 +23,10 @@ export interface FilterChipOption<T> {
 }
 
 interface BaseFiltersLocal {
+  [FilterType.DATE]?: {
+    checked: boolean;
+    dateRange: DateRange;
+  };
   [FilterType.CARD]?: {
     checked: boolean;
     options: FilterChipOption<CardValue | 'todas'>[];

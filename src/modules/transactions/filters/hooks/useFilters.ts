@@ -4,6 +4,7 @@ import { FilterType, FiltersLocal, FiltersStore } from '../filters.types';
 import { useFiltersStore } from '../store/filters-store';
 
 import { CardValue } from '../../transactions.types';
+import { DateRange } from 'react-day-picker';
 
 export const useFilters = () => {
   const storeFilters = useFiltersStore(state => state.toApply);
@@ -11,6 +12,14 @@ export const useFilters = () => {
   // Local state to use in the UI
   const [localFilters, setLocalFilters] = useState<FiltersLocal>(() => {
     const initialState: FiltersLocal = {};
+
+    initialState[FilterType.DATE] = {
+      checked: false,
+      dateRange: {
+        from: undefined,
+        to: undefined,
+      },
+    };
 
     initialState[FilterType.CARD] = {
       checked: false,
@@ -46,6 +55,14 @@ export const useFilters = () => {
   const currentFilters = useMemo(() => {
     const filtersFormatted: FiltersStore = {};
 
+    const dateState = localFilters[FilterType.DATE];
+    if (dateState) {
+      const dateRange = dateState.dateRange;
+
+      filtersFormatted[FilterType.DATE] =
+        dateState.checked && dateRange.from ? [dateRange] : [];
+    }
+
     const cardState = localFilters[FilterType.CARD];
     if (cardState) {
       const isAllSelected = cardState.options.find(
@@ -78,6 +95,32 @@ export const useFilters = () => {
           [type]: {
             ...filterState,
             checked,
+          },
+        };
+      });
+    },
+    [setLocalFilters],
+  );
+
+  const handleDateSelect = useCallback(
+    (dateRange: DateRange) => {
+      setLocalFilters(prev => {
+        const dateState = prev[FilterType.DATE];
+        if (!dateState) return prev;
+
+        // If there's a "to" date, set it to the end of the day (23:59:59.999)
+        const adjustedRange = { ...dateRange };
+        if (adjustedRange.to) {
+          const endOfDay = new Date(adjustedRange.to);
+          endOfDay.setHours(23, 59, 59, 999);
+          adjustedRange.to = endOfDay;
+        }
+
+        return {
+          ...prev,
+          [FilterType.DATE]: {
+            ...dateState,
+            dateRange: adjustedRange,
           },
         };
       });
@@ -142,6 +185,7 @@ export const useFilters = () => {
     currentFilters,
 
     handleCheckedChange,
+    handleDateSelect,
     handleCardSelect,
 
     applyFilters,

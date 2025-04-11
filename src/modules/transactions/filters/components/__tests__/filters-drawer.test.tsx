@@ -22,6 +22,7 @@ vi.mock('../hooks/useFilters', () => ({
     },
     currentFilters: {},
     handleCheckedChange: vi.fn(),
+    handleDateSelect: vi.fn(),
     handleCardSelect: vi.fn(),
     applyFilters: applyFiltersSpy,
   }),
@@ -202,10 +203,15 @@ describe('FiltersDrawer', () => {
     const toggleButton = screen.getByTestId('toggle-drawer');
     fireEvent.click(toggleButton);
 
-    const filterSection = screen.getByTestId('card-filter-section');
-    expect(filterSection).toBeDefined();
-    expect(filterSection.getAttribute('data-title')).toBe('Tarjeta');
-    expect(filterSection.getAttribute('data-checked')).toBe('false');
+    const cardFilterSection = screen.getByTestId('card-filter-section');
+    expect(cardFilterSection).toBeDefined();
+    expect(cardFilterSection.getAttribute('data-title')).toBe('Tarjeta');
+    expect(cardFilterSection.getAttribute('data-checked')).toBe('false');
+
+    const dateFilterSection = screen.getByTestId('date-filter-section');
+    expect(dateFilterSection).toBeDefined();
+    expect(dateFilterSection.getAttribute('data-title')).toBe('Fecha');
+    expect(dateFilterSection.getAttribute('data-checked')).toBe('false');
   });
 
   it('closes the drawer when apply button is clicked', () => {
@@ -227,6 +233,7 @@ describe('FiltersDrawer', () => {
       },
       currentFilters: {},
       handleCheckedChange: vi.fn(),
+      handleDateSelect: vi.fn(),
       handleCardSelect: vi.fn(),
       applyFilters: applyFiltersSpy, // Use our local spy
     });

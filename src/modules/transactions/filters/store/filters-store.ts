@@ -12,6 +12,7 @@ export interface FiltersState {
 
 export const useFiltersStore = create<FiltersState>()(set => ({
   toApply: {
+    [FilterType.DATE]: [],
     [FilterType.CARD]: [],
   },
 

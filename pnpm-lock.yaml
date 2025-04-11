@@ -26,12 +26,18 @@ dependencies:
   clsx:
     specifier: ^2.1.1
     version: 2.1.1
+  date-fns:
+    specifier: ^4.1.0
+    version: 4.1.0
   lucide-react:
     specifier: ^0.486.0
     version: 0.486.0(react@19.1.0)
   react:
     specifier: ^19.0.0
     version: 19.1.0
+  react-day-picker:
+    specifier: 8.10.1
+    version: 8.10.1(date-fns@4.1.0)(react@19.1.0)
   react-dom:
     specifier: ^19.0.0
     version: 19.1.0(react@19.1.0)
@@ -1771,6 +1777,10 @@ packages:
       whatwg-url: 14.2.0
     dev: true
 
+  /date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
+    dev: false
+
   /debug@4.4.0:
     resolution: {integrity: sha512-6WTZ/IxCY/T6BALoZHaE4ctp9xm+Z5kY/pzYaCHRFeyVhojxlrm+46y68HA6hr0TcwEssoxNiDEUJQjfPZ/RYA==}
     engines: {node: '>=6.0'}
@@ -2733,6 +2743,16 @@ packages:
   /queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
     dev: true
+
+  /react-day-picker@8.10.1(date-fns@4.1.0)(react@19.1.0):
+    resolution: {integrity: sha512-TMx7fNbhLk15eqcMt+7Z7S2KF7mfTId/XJDjKE8f+IUcFn0l08/kI4FiYTL/0yuOLmEcbR4Fwe3GJf/NiiMnPA==}
+    peerDependencies:
+      date-fns: ^2.28.0 || ^3.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      date-fns: 4.1.0
+      react: 19.1.0
+    dev: false
 
   /react-dom@19.1.0(react@19.1.0):
     resolution: {integrity: sha512-Xs1hdnE+DyKgeHJeJznQmYMIBG3TKIHJJT95Q58nHLSrElKlGQqDTR2HQ9fx5CN/Gk6Vh/kupBTDLU11/nDk/g==}
