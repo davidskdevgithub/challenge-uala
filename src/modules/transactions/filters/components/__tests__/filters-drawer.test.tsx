@@ -1,6 +1,31 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { FiltersDrawer } from '../filters-drawer';
+import { FilterType } from '../../filters.types';
+import * as useFiltersModule from '../../hooks/useFilters';
+import { CardValue } from '@/modules/transactions/transactions.types';
+
+// Mock the useFilters hook
+const applyFiltersSpy = vi.fn();
+vi.mock('../hooks/useFilters', () => ({
+  useFilters: () => ({
+    storeFilters: {},
+    localFilters: {
+      [FilterType.CARD]: {
+        checked: false,
+        options: [
+          { value: 'card1', label: 'Card 1', isSelected: true },
+          { value: 'card2', label: 'Card 2', isSelected: false },
+          { value: 'card3', label: 'Card 3', isSelected: false },
+        ],
+      },
+    },
+    currentFilters: {},
+    handleCheckedChange: vi.fn(),
+    handleCardSelect: vi.fn(),
+    applyFilters: applyFiltersSpy,
+  }),
+}));
 
 // Mock the child components
 vi.mock('../filter-section', () => ({
@@ -127,15 +152,6 @@ vi.mock('@/components/ui/badge', () => ({
     ),
 }));
 
-// Mock the filter options
-vi.mock('../filters.mocks', () => ({
-  mockFilterCardOptions: [
-    { value: 'card1', label: 'Card 1', isSelected: true },
-    { value: 'card2', label: 'Card 2', isSelected: false },
-    { value: 'card3', label: 'Card 3', isSelected: false },
-  ],
-}));
-
 describe('FiltersDrawer', () => {
   it('renders the filter button correctly', () => {
     render(<FiltersDrawer />);
@@ -173,12 +189,48 @@ describe('FiltersDrawer', () => {
     expect(screen.getByTestId('drawer-content')).toBeDefined();
     expect(screen.getByTestId('drawer-container')).toBeDefined();
     expect(screen.getByTestId('drawer-title')).toBeDefined();
+    expect(screen.getByText('Filtros')).toBeDefined();
     expect(screen.getByTestId('filters-heading')).toBeDefined();
     expect(screen.getByTestId('clear-filters-button')).toBeDefined();
     expect(screen.getByTestId('apply-filters-button')).toBeDefined();
   });
 
+  it('renders the filter section correctly', () => {
+    render(<FiltersDrawer />);
+
+    // Open the drawer
+    const toggleButton = screen.getByTestId('toggle-drawer');
+    fireEvent.click(toggleButton);
+
+    const filterSection = screen.getByTestId('card-filter-section');
+    expect(filterSection).toBeDefined();
+    expect(filterSection.getAttribute('data-title')).toBe('Tarjeta');
+    expect(filterSection.getAttribute('data-checked')).toBe('false');
+  });
+
   it('closes the drawer when apply button is clicked', () => {
+    // Create a fresh spy for this test
+    const applyFiltersSpy = vi.fn();
+
+    // Mock the useFilters hook with a direct spy
+    vi.spyOn(useFiltersModule, 'useFilters').mockReturnValue({
+      storeFilters: {},
+      localFilters: {
+        [FilterType.CARD]: {
+          checked: false,
+          options: [
+            { value: CardValue.VISA, label: 'Card 1', isSelected: true },
+            { value: CardValue.MASTERCARD, label: 'Card 2', isSelected: false },
+            { value: CardValue.AMEX, label: 'Card 3', isSelected: false },
+          ],
+        },
+      },
+      currentFilters: {},
+      handleCheckedChange: vi.fn(),
+      handleCardSelect: vi.fn(),
+      applyFilters: applyFiltersSpy, // Use our local spy
+    });
+
     render(<FiltersDrawer />);
 
     // Open the drawer
@@ -192,6 +244,9 @@ describe('FiltersDrawer', () => {
     // Click apply button
     const applyButton = screen.getByTestId('apply-filters-button');
     fireEvent.click(applyButton);
+
+    // Check if applyFilters was called
+    expect(applyFiltersSpy).toHaveBeenCalled();
 
     // Drawer should now be closed
     expect(drawer.getAttribute('data-open')).toBe('false');

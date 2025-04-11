@@ -15,14 +15,25 @@ import { Badge } from '@/components/ui/badge';
 import IconFilter from '@/components/icons/icon-filter';
 import { ChevronLeft, X } from 'lucide-react';
 
+import { useFilters } from '../hooks/useFilters';
 import { FilterSection } from './filter-section';
-import { mockFilterCardOptions } from '../filters.mocks';
+import { FilterType } from '../filters.types';
 
 export const FiltersDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [testChecked, setTestChecked] = useState(false);
+
+  const {
+    storeFilters,
+    localFilters,
+    currentFilters,
+    handleCheckedChange,
+    handleCardSelect,
+    applyFilters,
+  } = useFilters();
+  console.log({ storeFilters, localFilters, currentFilters });
 
   const handleApplyFilters = () => {
+    applyFilters();
     setIsOpen(false);
   };
 
@@ -99,60 +110,64 @@ export const FiltersDrawer = () => {
               aria-label="Filter options"
               data-testid="filter-options-group"
             >
-              <FilterSection
-                icon="credit-card"
-                title="Tarjeta"
-                checked={testChecked}
-                onCheckedChange={checked => setTestChecked(checked)}
-                data-testid="card-filter-section"
-              >
-                {testChecked && (
-                  <div
-                    className="flex flex-wrap gap-2 mb-4"
-                    data-testid="card-options-container"
-                  >
-                    {mockFilterCardOptions.map(
-                      ({ value, label, isSelected }) => {
-                        return (
-                          <Badge
-                            key={value}
-                            variant={isSelected ? 'default' : 'outline'}
-                            className={`
-                              rounded-full px-4 py-1.5 cursor-pointer
-                              ${
-                                isSelected
-                                  ? 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'
-                                  : 'bg-white border hover:bg-gray-100'
-                              }
-                            `}
-                            role="button"
-                            aria-pressed={isSelected}
-                            tabIndex={0}
-                            onClick={() => {
-                              /* Add toggle selection handler */
-                            }}
-                            onKeyDown={e => {
-                              if (e.key === 'Enter' || e.key === ' ') {
-                                e.preventDefault();
-                                // Add toggle selection handler
-                              }
-                            }}
-                            data-testid={`card-option-${value}`}
-                          >
-                            {label}
-                            {isSelected && (
-                              <X
-                                className="h-3 w-3 ml-1 inline"
-                                aria-hidden="true"
-                              />
-                            )}
-                          </Badge>
-                        );
-                      },
-                    )}
-                  </div>
-                )}
-              </FilterSection>
+              {localFilters[FilterType.CARD] && (
+                <FilterSection
+                  icon="credit-card"
+                  title="Tarjeta"
+                  checked={localFilters[FilterType.CARD].checked}
+                  onCheckedChange={checked =>
+                    handleCheckedChange(FilterType.CARD, checked)
+                  }
+                  data-testid="card-filter-section"
+                >
+                  {localFilters[FilterType.CARD].checked && (
+                    <div
+                      className="flex flex-wrap gap-2 mb-4"
+                      data-testid="card-options-container"
+                    >
+                      {localFilters[FilterType.CARD].options.map(
+                        ({ value, label, isSelected }) => {
+                          return (
+                            <Badge
+                              key={value}
+                              variant={isSelected ? 'default' : 'outline'}
+                              className={`
+                                  rounded-full px-4 py-1.5 cursor-pointer
+                                  ${
+                                    isSelected
+                                      ? 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'
+                                      : 'bg-white border hover:bg-gray-100'
+                                  }
+                                `}
+                              role="button"
+                              aria-pressed={isSelected}
+                              tabIndex={0}
+                              onClick={() => {
+                                handleCardSelect(value);
+                              }}
+                              onKeyDown={e => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                  e.preventDefault();
+                                  handleCardSelect(value);
+                                }
+                              }}
+                              data-testid={`card-option-${value}`}
+                            >
+                              {label}
+                              {isSelected && (
+                                <X
+                                  className="h-3 w-3 ml-1 inline"
+                                  aria-hidden="true"
+                                />
+                              )}
+                            </Badge>
+                          );
+                        },
+                      )}
+                    </div>
+                  )}
+                </FilterSection>
+              )}
             </div>
           </div>
 
