@@ -4,7 +4,7 @@ import { useTransactions } from '../hooks/useTransactions';
 
 export const TransactionsSummaryPage = () => {
   const {
-    transactions,
+    transactionsFiltered,
     totalAmount,
     isLoading,
     error,
@@ -25,7 +25,7 @@ export const TransactionsSummaryPage = () => {
         error={error}
       />
       <TransactionList
-        transactions={transactions}
+        transactions={transactionsFiltered}
         isLoading={isLoading}
         error={error}
       />
