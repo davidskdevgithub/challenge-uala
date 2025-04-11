@@ -19,6 +19,7 @@ import { ChevronLeft, X, ChevronRight } from 'lucide-react';
 import { useFilters } from '../hooks/useFilters';
 import { FilterSection } from './filter-section';
 import { FilterType } from '../filters.types';
+import { FilterAmounts } from './filter-amounts';
 
 const CURRENT_YEAR = new Date().getFullYear();
 
@@ -32,6 +33,7 @@ export const FiltersDrawer = () => {
     handleCheckedChange,
     handleDateSelect,
     handleCardSelect,
+    handleAmountChange,
     applyFilters,
   } = useFilters();
   // debug purpose only, remove later
@@ -214,6 +216,14 @@ export const FiltersDrawer = () => {
                     </div>
                   )}
                 </FilterSection>
+              )}
+
+              {localFilters[FilterType.AMOUNT] && (
+                <FilterAmounts
+                  filter={localFilters[FilterType.AMOUNT]}
+                  handleCheckedChange={handleCheckedChange}
+                  handleAmountRange={handleAmountChange}
+                />
               )}
             </div>
           </div>
