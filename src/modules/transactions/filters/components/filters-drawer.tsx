@@ -10,18 +10,15 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Calendar } from '@/components/ui/calendar';
 
 import IconFilter from '@/components/icons/icon-filter';
-import { ChevronLeft, X, ChevronRight } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 
 import { useFilters } from '../hooks/useFilters';
-import { FilterSection } from './filter-section';
 import { FilterType } from '../filters.types';
 import { FilterAmounts } from './filter-amounts';
-
-const CURRENT_YEAR = new Date().getFullYear();
+import { FilterDate } from './filter-date';
+import { FilterChips } from './filter-chips';
 
 export const FiltersDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -118,104 +115,22 @@ export const FiltersDrawer = () => {
               data-testid="filter-options-group"
             >
               {localFilters[FilterType.DATE] && (
-                <FilterSection
-                  icon="calendar"
-                  title="Fecha"
-                  checked={localFilters[FilterType.DATE].checked}
-                  onCheckedChange={checked =>
-                    handleCheckedChange(FilterType.DATE, checked)
-                  }
-                  data-testid="date-filter-section"
-                >
-                  {localFilters[FilterType.DATE].checked && (
-                    <div className="flex flex-col items-end max-w-3xs mx-auto mb-4 pb-4 border rounded-md bg-white">
-                      <Calendar
-                        mode="range"
-                        selected={localFilters[FilterType.DATE].dateRange}
-                        onSelect={range =>
-                          handleDateSelect({ from: range?.from, to: range?.to })
-                        }
-                        className="w-full"
-                        components={{
-                          IconLeft: () => <ChevronLeft className="h-4 w-4" />,
-                          IconRight: () => <ChevronRight className="h-4 w-4" />,
-                        }}
-                        disabled={{
-                          before: new Date(CURRENT_YEAR, 0, 1),
-                          after: new Date(CURRENT_YEAR, 11, 31),
-                        }}
-                      />
-                      <Button
-                        variant="outline"
-                        onClick={() =>
-                          handleDateSelect({ from: undefined, to: undefined })
-                        }
-                        className="text-primary-blue border-primary-blue hover:bg-primary-blue-light hover:text-primary-blue rounded-3xl mr-4"
-                      >
-                        Borrar
-                      </Button>
-                    </div>
-                  )}
-                </FilterSection>
+                <FilterDate
+                  filter={localFilters[FilterType.DATE]}
+                  handleCheckedChange={handleCheckedChange}
+                  handleDateSelect={handleDateSelect}
+                />
               )}
 
               {localFilters[FilterType.CARD] && (
-                <FilterSection
+                <FilterChips
+                  filter={localFilters[FilterType.CARD]}
+                  filterType={FilterType.CARD}
                   icon="credit-card"
                   title="Tarjeta"
-                  checked={localFilters[FilterType.CARD].checked}
-                  onCheckedChange={checked =>
-                    handleCheckedChange(FilterType.CARD, checked)
-                  }
-                  data-testid="card-filter-section"
-                >
-                  {localFilters[FilterType.CARD].checked && (
-                    <div
-                      className="flex flex-wrap gap-2 mb-4"
-                      data-testid="card-options-container"
-                    >
-                      {localFilters[FilterType.CARD].options.map(
-                        ({ value, label, isSelected }) => {
-                          return (
-                            <Badge
-                              key={value}
-                              variant={isSelected ? 'default' : 'outline'}
-                              className={`
-                                  rounded-full px-4 py-1.5 cursor-pointer
-                                  ${
-                                    isSelected
-                                      ? 'bg-blue-100 text-blue-800 hover:bg-blue-200 border border-blue-300'
-                                      : 'bg-white border hover:bg-gray-100'
-                                  }
-                                `}
-                              role="button"
-                              aria-pressed={isSelected}
-                              tabIndex={0}
-                              onClick={() => {
-                                handleCardSelect(value);
-                              }}
-                              onKeyDown={e => {
-                                if (e.key === 'Enter' || e.key === ' ') {
-                                  e.preventDefault();
-                                  handleCardSelect(value);
-                                }
-                              }}
-                              data-testid={`card-option-${value}`}
-                            >
-                              {label}
-                              {isSelected && (
-                                <X
-                                  className="h-3 w-3 ml-1 inline"
-                                  aria-hidden="true"
-                                />
-                              )}
-                            </Badge>
-                          );
-                        },
-                      )}
-                    </div>
-                  )}
-                </FilterSection>
+                  handleCheckedChange={handleCheckedChange}
+                  handleChipSelect={handleCardSelect}
+                />
               )}
 
               {localFilters[FilterType.AMOUNT] && (
