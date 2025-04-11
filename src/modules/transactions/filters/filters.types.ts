@@ -15,6 +15,7 @@ export interface NumberRange {
 }
 
 export type FilterValues = DateRange | CardValue | NumberRange;
+export type FilterOptValues = 'todas' | CardValue;
 
 export interface FiltersStore {
   [FilterType.DATE]?: FilterValues[];
