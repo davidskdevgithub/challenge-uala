@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 import { FiltersLocal, FilterType, NumberRange } from '../filters.types';
 
 import { FilterSection } from './filter-section';
 import { Slider } from '@/components/ui/slider';
+
+import { debounce } from '@/utils/debounce';
 
 interface FilterAmountsProps {
   filter: NonNullable<FiltersLocal[FilterType.AMOUNT]>;
@@ -21,12 +23,19 @@ export const FilterAmounts: React.FC<FilterAmountsProps> = ({
     filter.values.max,
   ]);
 
+  const debouncedHandleAmountRange = useCallback(
+    debounce((value: [number, number]) => {
+      handleAmountRange({
+        min: value[0],
+        max: value[1],
+      });
+    }, 500),
+    [handleAmountRange],
+  );
+
   const handleSliderChange = (value: [number, number]) => {
     setSliderValue(value);
-    handleAmountRange({
-      min: value[0],
-      max: value[1],
-    });
+    debouncedHandleAmountRange(value);
   };
 
   return (

@@ -19,6 +19,7 @@ export type FilterValues = DateRange | CardValue | NumberRange;
 export interface FiltersStore {
   [FilterType.DATE]?: FilterValues[];
   [FilterType.CARD]?: FilterValues[];
+  [FilterType.AMOUNT]?: FilterValues[];
 }
 
 export interface FilterChipOption<T> {
@@ -35,6 +36,11 @@ interface BaseFiltersLocal {
   [FilterType.CARD]?: {
     checked: boolean;
     options: FilterChipOption<CardValue | 'todas'>[];
+  };
+  [FilterType.AMOUNT]?: {
+    checked: boolean;
+    range: NumberRange;
+    values: NumberRange;
   };
 }
 

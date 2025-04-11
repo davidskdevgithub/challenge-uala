@@ -6,6 +6,8 @@ import { useFiltersStore } from '../store/filters-store';
 import { CardValue } from '../../transactions.types';
 import { DateRange } from 'react-day-picker';
 
+const MAX_AMOUNT = 2000;
+
 export const useFilters = () => {
   const storeFilters = useFiltersStore(state => state.toApply);
 
@@ -48,6 +50,18 @@ export const useFilters = () => {
       ],
     };
 
+    initialState[FilterType.AMOUNT] = {
+      checked: false,
+      range: {
+        min: 0,
+        max: MAX_AMOUNT,
+      },
+      values: {
+        min: 0,
+        max: MAX_AMOUNT,
+      },
+    };
+
     return initialState;
   });
 
@@ -79,6 +93,14 @@ export const useFilters = () => {
 
       filtersFormatted[FilterType.CARD] =
         cardValues.length > 0 ? cardValues : [];
+    }
+
+    const amountState = localFilters[FilterType.AMOUNT];
+    if (amountState) {
+      const { min, max } = amountState.values;
+
+      filtersFormatted[FilterType.AMOUNT] =
+        amountState.checked && min <= max ? [{ min, max }] : [];
     }
 
     return filtersFormatted;
@@ -169,6 +191,24 @@ export const useFilters = () => {
     [setLocalFilters],
   );
 
+  const handleAmountChange = useCallback(
+    (values: { min: number; max: number }) => {
+      setLocalFilters(prev => {
+        const amountState = prev[FilterType.AMOUNT];
+        if (!amountState) return prev;
+
+        return {
+          ...prev,
+          [FilterType.AMOUNT]: {
+            ...amountState,
+            values,
+          },
+        };
+      });
+    },
+    [setLocalFilters],
+  );
+
   const setFilterValues = useFiltersStore(state => state.setFilterValues);
   const applyFilters = useCallback(() => {
     for (const filterType of Object.keys(currentFilters) as FilterType[]) {
@@ -187,6 +227,7 @@ export const useFilters = () => {
     handleCheckedChange,
     handleDateSelect,
     handleCardSelect,
+    handleAmountChange,
 
     applyFilters,
   };

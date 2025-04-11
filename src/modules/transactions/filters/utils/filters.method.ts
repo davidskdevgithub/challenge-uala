@@ -1,4 +1,4 @@
-import { FilterType, FilterValues } from '../filters.types';
+import { FilterType, FilterValues, NumberRange } from '../filters.types';
 import { DateRange } from 'react-day-picker';
 import { Transaction, CardValue } from '../../transactions.types';
 
@@ -35,9 +35,26 @@ const filterTransactionsByDate = (
   });
 };
 
+const filterTransactionsByAmount = (
+  transactions: Transaction[],
+  amount: NumberRange,
+): Transaction[] => {
+  const { min, max } = amount;
+  if (!min && !max) {
+    return transactions;
+  }
+
+  return transactions.filter(transaction => {
+    const transactionAmount = transaction.amount;
+    return transactionAmount >= min && transactionAmount <= max;
+  });
+};
+
 export const filterMethods = {
   [FilterType.DATE]: (transactions: Transaction[], values: FilterValues[]) =>
     filterTransactionsByDate(transactions, values[0] as DateRange),
   [FilterType.CARD]: (transactions: Transaction[], values: FilterValues[]) =>
     filterTransactionsByCards(transactions, values as CardValue[]),
+  [FilterType.AMOUNT]: (transactions: Transaction[], values: FilterValues[]) =>
+    filterTransactionsByAmount(transactions, values[0] as NumberRange),
 };
