@@ -4,12 +4,17 @@ import { DateRange } from 'react-day-picker';
 export enum FilterType {
   DATE = 'date',
   CARD = 'card',
-  // AMOUNT = 'amount',
+  AMOUNT = 'amount',
   // INSTALLMENTS = 'installments',
   // PAYMENT_METHOD = 'paymentMethod',
 }
 
-export type FilterValues = DateRange | CardValue;
+export interface NumberRange {
+  min: number;
+  max: number;
+}
+
+export type FilterValues = DateRange | CardValue | NumberRange;
 
 export interface FiltersStore {
   [FilterType.DATE]?: FilterValues[];
