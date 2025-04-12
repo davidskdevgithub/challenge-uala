@@ -5,7 +5,7 @@ export enum FilterType {
   DATE = 'date',
   CARD = 'card',
   AMOUNT = 'amount',
-  // INSTALLMENTS = 'installments',
+  INSTALLMENTS = 'installments',
   // PAYMENT_METHOD = 'paymentMethod',
 }
 
@@ -14,13 +14,20 @@ export interface NumberRange {
   max: number;
 }
 
-export type FilterValues = DateRange | CardValue | NumberRange;
-export type FilterOptValues = 'todas' | CardValue;
+export type InstallmentValue = 1 | 2 | 3 | 6 | 12;
+
+export type FilterValues =
+  | DateRange
+  | CardValue
+  | NumberRange
+  | InstallmentValue;
+export type FilterOptValues = 'todas' | CardValue | InstallmentValue;
 
 export interface FiltersStore {
   [FilterType.DATE]?: FilterValues[];
   [FilterType.CARD]?: FilterValues[];
   [FilterType.AMOUNT]?: FilterValues[];
+  [FilterType.INSTALLMENTS]?: FilterValues[];
 }
 
 export interface FilterChipOption<T> {
@@ -42,6 +49,10 @@ interface BaseFiltersLocal {
     checked: boolean;
     range: NumberRange;
     values: NumberRange;
+  };
+  [FilterType.INSTALLMENTS]?: {
+    checked: boolean;
+    options: FilterChipOption<InstallmentValue | 'todas'>[];
   };
 }
 

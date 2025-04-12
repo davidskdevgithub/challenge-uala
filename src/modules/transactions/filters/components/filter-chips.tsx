@@ -31,9 +31,11 @@ export const FilterChips: React.FC<FilterChipProps> = ({
     filter: NonNullable<FiltersLocal[FilterType]>,
   ): filter is {
     checked: boolean;
-    options: FilterChipOption<FilterOptValues>[];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    options: FilterChipOption<any>[];
   } => {
-    return 'options' in filter;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return 'options' in filter && Array.isArray((filter as any).options);
   };
 
   if (!hasOptions(filter)) {

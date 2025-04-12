@@ -1,6 +1,12 @@
 import { useState, useMemo, useCallback } from 'react';
 
-import { FilterType, FiltersLocal, FiltersStore } from '../filters.types';
+import {
+  FilterType,
+  FiltersLocal,
+  FiltersStore,
+  FilterOptValues,
+  InstallmentValue,
+} from '../filters.types';
 import { useFiltersStore } from '../store/filters-store';
 
 import { CardValue } from '../../transactions.types';
@@ -62,6 +68,43 @@ export const useFilters = () => {
       },
     };
 
+    initialState[FilterType.INSTALLMENTS] = {
+      checked: false,
+      options: [
+        {
+          value: 'todas',
+          label: 'Todas',
+          isSelected: false,
+        },
+        // TODO: replace hardcode values with the real data
+        {
+          value: 1,
+          label: '1',
+          isSelected: false,
+        },
+        {
+          value: 2,
+          label: '2',
+          isSelected: false,
+        },
+        {
+          value: 3,
+          label: '3',
+          isSelected: false,
+        },
+        {
+          value: 6,
+          label: '6',
+          isSelected: false,
+        },
+        {
+          value: 12,
+          label: '12',
+          isSelected: false,
+        },
+      ],
+    };
+
     return initialState;
   });
 
@@ -101,6 +144,24 @@ export const useFilters = () => {
 
       filtersFormatted[FilterType.AMOUNT] =
         amountState.checked && min <= max ? [{ min, max }] : [];
+    }
+
+    const installmentState = localFilters[FilterType.INSTALLMENTS];
+    if (installmentState) {
+      const isAllSelected = installmentState.options.find(
+        opt => opt.value === 'todas',
+      )?.isSelected;
+
+      const selectedOptions = isAllSelected
+        ? installmentState.options.filter(opt => opt.value !== 'todas')
+        : installmentState.options.filter(option => option.isSelected);
+
+      const installmentValues: InstallmentValue[] = installmentState.checked
+        ? selectedOptions.map(option => option.value as InstallmentValue)
+        : [];
+
+      filtersFormatted[FilterType.INSTALLMENTS] =
+        installmentValues.length > 0 ? installmentValues : [];
     }
 
     return filtersFormatted;
@@ -150,13 +211,13 @@ export const useFilters = () => {
     [setLocalFilters],
   );
 
-  const handleCardSelect = useCallback(
-    (value: CardValue | 'todas') => {
+  const handleChipSelect = useCallback(
+    (filterType: FilterType, value: FilterOptValues) => {
       setLocalFilters(prev => {
-        const cardState = prev[FilterType.CARD];
-        if (!cardState) return prev;
+        const filterState = prev[filterType];
+        if (!filterState || !('options' in filterState)) return prev;
 
-        const newOptions = cardState.options.map(option => {
+        const newOptions = filterState.options.map(option => {
           if (value === 'todas') {
             return {
               ...option,
@@ -181,8 +242,8 @@ export const useFilters = () => {
 
         return {
           ...prev,
-          [FilterType.CARD]: {
-            ...cardState,
+          [filterType]: {
+            ...filterState,
             options: newOptions,
           },
         };
@@ -226,7 +287,7 @@ export const useFilters = () => {
 
     handleCheckedChange,
     handleDateSelect,
-    handleCardSelect,
+    handleChipSelect,
     handleAmountChange,
 
     applyFilters,

@@ -29,7 +29,7 @@ export const FiltersDrawer = () => {
     currentFilters,
     handleCheckedChange,
     handleDateSelect,
-    handleCardSelect,
+    handleChipSelect,
     handleAmountChange,
     applyFilters,
   } = useFilters();
@@ -129,7 +129,22 @@ export const FiltersDrawer = () => {
                   icon="credit-card"
                   title="Tarjeta"
                   handleCheckedChange={handleCheckedChange}
-                  handleChipSelect={handleCardSelect}
+                  handleChipSelect={value =>
+                    handleChipSelect(FilterType.CARD, value)
+                  }
+                />
+              )}
+
+              {localFilters[FilterType.INSTALLMENTS] && (
+                <FilterChips
+                  filter={localFilters[FilterType.INSTALLMENTS]}
+                  filterType={FilterType.INSTALLMENTS}
+                  icon="receipt"
+                  title="Cuotas"
+                  handleCheckedChange={handleCheckedChange}
+                  handleChipSelect={value =>
+                    handleChipSelect(FilterType.INSTALLMENTS, value)
+                  }
                 />
               )}
 

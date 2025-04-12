@@ -15,6 +15,7 @@ export const useFiltersStore = create<FiltersState>()(set => ({
     [FilterType.DATE]: [],
     [FilterType.CARD]: [],
     [FilterType.AMOUNT]: [],
+    [FilterType.INSTALLMENTS]: [],
   },
 
   setFilterValues: (type, values) => {
