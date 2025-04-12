@@ -52,7 +52,7 @@ export const TransactionList: React.FC<TransactionListProps> = ({
         >
           Historial de Transacciones
         </h2>
-        <div className="flex gap-2" aria-label="Transaction actions">
+        <div className="flex md:gap-2" aria-label="Transaction actions">
           <div className="w-12 h-12 flex items-center justify-center">
             <FiltersDrawer />
           </div>

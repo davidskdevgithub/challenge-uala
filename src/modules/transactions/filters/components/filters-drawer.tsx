@@ -66,7 +66,7 @@ export const FiltersDrawer = () => {
           className="mx-auto w-full max-w-md h-full flex flex-col"
           data-testid="drawer-container"
         >
-          <DrawerHeader className="px-4 py-12">
+          <DrawerHeader className="px-4 py-4 md:py-12">
             <div className="flex items-center gap-4">
               <DrawerClose asChild>
                 <button

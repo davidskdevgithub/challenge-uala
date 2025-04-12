@@ -14,7 +14,7 @@ export const TransactionsSummaryPage = () => {
 
   return (
     <main
-      className="container w-md mx-auto flex flex-col items-stretch gap-8"
+      className="container w-xs md:w-md mx-auto flex flex-col items-stretch gap-8"
       tabIndex={-1}
     >
       <TransaccionTotalPeriod
