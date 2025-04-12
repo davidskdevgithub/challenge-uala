@@ -3,10 +3,8 @@ import { useMemo } from 'react';
 import { TransactionItem } from './transaction-item';
 import { Transaction } from '../transactions.types';
 
-import IconDownload from '@/components/icons/icon-download';
 import { Skeleton } from '@/components/ui/skeleton';
-
-import { FiltersDrawer } from '../filters/components/filters-drawer';
+import IconEmptySearch from '@/components/icons/icon-empty-search';
 
 interface TransactionListProps {
   transactions: Transaction[];
@@ -32,53 +30,40 @@ export const TransactionList: React.FC<TransactionListProps> = ({
     ));
   }, [transactions]);
 
+  if (isLoading) {
+    return Array.from({ length: 10 }).map((_, index) => (
+      <div key={index} className="flex items-center gap-2 px-2 mb-3">
+        <Skeleton className="w-10 h-10 rounded-2xl" />
+        <Skeleton className="w-full h-10 rounded-full" />
+      </div>
+    ));
+  }
+
   if (error) {
     return <div data-testid="error-state">Error: {error.message}</div>;
   }
 
-  return (
-    <section
-      aria-labelledby="transactions-heading"
-      data-testid="transactions-section"
-    >
-      <div className="flex items-center justify-between">
-        <h2
-          id="transactions-heading"
-          className="pl-2 text-sm font-semibold text-neutral-hard"
-          data-testid="transactions-heading"
-        >
-          Historial de Transacciones
-        </h2>
-        <div className="flex md:gap-2" aria-label="Transaction actions">
-          <div className="w-12 h-12 flex items-center justify-center">
-            <FiltersDrawer />
-          </div>
-          <div className="w-12 h-12 flex items-center justify-center">
-            <button
-              aria-label="Download transactions"
-              className="p-2 rounded-full hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-blue"
-            >
-              <IconDownload aria-hidden="true" />
-            </button>
-          </div>
-        </div>
+  if (transactions.length === 0) {
+    return (
+      <div
+        className="w-xs mx-auto flex flex-col items-center gap-4 py-8 text-center"
+        data-testid="empty-transactions"
+      >
+        <IconEmptySearch />
+        <p className="text-neutral text-sm font-light leading-[140%]!">
+          No hay resultados que mostrar. Podés probar usando los filtros.
+        </p>
       </div>
-      {isLoading ? (
-        Array.from({ length: 10 }).map((_, index) => (
-          <div key={index} className="flex items-center gap-2 px-2 mb-3">
-            <Skeleton className="w-10 h-10 rounded-2xl" />
-            <Skeleton className="w-full h-10 rounded-full" />
-          </div>
-        ))
-      ) : (
-        <ul
-          className="flex flex-col divide-y divide-neutral-border list-none p-0 mt-2 mx-0 mb-0"
-          role="list"
-          data-testid="transactions-list"
-        >
-          {MemoizedTransactions}
-        </ul>
-      )}
-    </section>
+    );
+  }
+
+  return (
+    <ul
+      className="flex flex-col divide-y divide-neutral-border list-none p-0 mt-2 mx-0 mb-0"
+      role="list"
+      data-testid="transactions-list"
+    >
+      {MemoizedTransactions}
+    </ul>
   );
 };
