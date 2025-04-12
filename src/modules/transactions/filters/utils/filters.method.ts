@@ -50,6 +50,20 @@ const filterTransactionsByAmount = (
   });
 };
 
+const filterTransactionsByInstallments = (
+  transactions: Transaction[],
+  installments: number[],
+): Transaction[] => {
+  if (installments.length === 0) {
+    return transactions;
+  }
+
+  return transactions.filter(transaction => {
+    const transactionInstallments = transaction.installments;
+    return installments.includes(transactionInstallments);
+  });
+};
+
 export const filterMethods = {
   [FilterType.DATE]: (transactions: Transaction[], values: FilterValues[]) =>
     filterTransactionsByDate(transactions, values[0] as DateRange),
@@ -57,4 +71,8 @@ export const filterMethods = {
     filterTransactionsByCards(transactions, values as CardValue[]),
   [FilterType.AMOUNT]: (transactions: Transaction[], values: FilterValues[]) =>
     filterTransactionsByAmount(transactions, values[0] as NumberRange),
+  [FilterType.INSTALLMENTS]: (
+    transactions: Transaction[],
+    values: FilterValues[],
+  ) => filterTransactionsByInstallments(transactions, values as number[]),
 };

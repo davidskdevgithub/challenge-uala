@@ -23,7 +23,7 @@ vi.mock('../hooks/useFilters', () => ({
     currentFilters: {},
     handleCheckedChange: vi.fn(),
     handleDateSelect: vi.fn(),
-    handleCardSelect: vi.fn(),
+    handleChipSelect: vi.fn(),
     handleAmountChange: vi.fn(),
     applyFilters: applyFiltersSpy,
   }),
@@ -236,7 +236,7 @@ describe('FiltersDrawer', () => {
       currentFilters: {},
       handleCheckedChange: vi.fn(),
       handleDateSelect: vi.fn(),
-      handleCardSelect: vi.fn(),
+      handleChipSelect: vi.fn(),
       handleAmountChange: vi.fn(),
       applyFilters: applyFiltersSpy, // Use our local spy
     });
