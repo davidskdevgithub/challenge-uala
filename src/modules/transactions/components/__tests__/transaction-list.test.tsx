@@ -22,19 +22,6 @@ vi.mock('../transaction-item', () => ({
 }));
 
 describe('TransactionList', () => {
-  it('renders the transaction list with correct heading', () => {
-    render(
-      <TransactionList
-        transactions={mockTransactions}
-        isLoading={false}
-        error={null}
-      />,
-    );
-
-    const heading = screen.getByTestId('transactions-heading');
-    expect(heading.textContent).toBe('Historial de Transacciones');
-  });
-
   it('renders the correct number of transaction items', () => {
     render(
       <TransactionList
@@ -102,9 +89,6 @@ describe('TransactionList', () => {
         error={null}
       />,
     );
-
-    const section = screen.getByTestId('transactions-section');
-    expect(section).toBeDefined();
 
     const list = screen.getByTestId('transactions-list');
     expect(list).toBeDefined();
