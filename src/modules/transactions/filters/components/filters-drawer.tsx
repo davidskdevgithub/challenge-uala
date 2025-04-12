@@ -66,7 +66,7 @@ export const FiltersDrawer = () => {
           className="mx-auto w-full max-w-md h-full flex flex-col"
           data-testid="drawer-container"
         >
-          <DrawerHeader className="px-4 py-12">
+          <DrawerHeader className="px-4 py-4 md:py-12">
             <div className="flex items-center gap-4">
               <DrawerClose asChild>
                 <button
@@ -153,6 +153,19 @@ export const FiltersDrawer = () => {
                   filter={localFilters[FilterType.AMOUNT]}
                   handleCheckedChange={handleCheckedChange}
                   handleAmountRange={handleAmountChange}
+                />
+              )}
+
+              {localFilters[FilterType.PAYMENT_METHOD] && (
+                <FilterChips
+                  filter={localFilters[FilterType.PAYMENT_METHOD]}
+                  filterType={FilterType.PAYMENT_METHOD}
+                  icon="receipt"
+                  title="Metodos de cobro"
+                  handleCheckedChange={handleCheckedChange}
+                  handleChipSelect={value =>
+                    handleChipSelect(FilterType.PAYMENT_METHOD, value)
+                  }
                 />
               )}
             </div>
