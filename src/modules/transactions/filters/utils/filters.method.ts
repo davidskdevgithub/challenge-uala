@@ -1,6 +1,10 @@
 import { FilterType, FilterValues, NumberRange } from '../filters.types';
 import { DateRange } from 'react-day-picker';
-import { Transaction, CardValue } from '../../transactions.types';
+import {
+  Transaction,
+  CardValue,
+  PaymentMethodValue,
+} from '../../transactions.types';
 
 const filterTransactionsByCards = (
   transactions: Transaction[],
@@ -64,6 +68,19 @@ const filterTransactionsByInstallments = (
   });
 };
 
+const filterTransactionsByPaymentMethod = (
+  transactions: Transaction[],
+  paymentMethods: PaymentMethodValue[],
+): Transaction[] => {
+  if (paymentMethods.length === 0) {
+    return transactions;
+  }
+  return transactions.filter(transaction => {
+    const transactionPaymentMethod = transaction.paymentMethod;
+    return paymentMethods.includes(transactionPaymentMethod);
+  });
+};
+
 export const filterMethods = {
   [FilterType.DATE]: (transactions: Transaction[], values: FilterValues[]) =>
     filterTransactionsByDate(transactions, values[0] as DateRange),
@@ -75,4 +92,12 @@ export const filterMethods = {
     transactions: Transaction[],
     values: FilterValues[],
   ) => filterTransactionsByInstallments(transactions, values as number[]),
+  [FilterType.PAYMENT_METHOD]: (
+    transactions: Transaction[],
+    values: FilterValues[],
+  ) =>
+    filterTransactionsByPaymentMethod(
+      transactions,
+      values as PaymentMethodValue[],
+    ),
 };

@@ -9,7 +9,7 @@ import {
 } from '../filters.types';
 import { useFiltersStore } from '../store/filters-store';
 
-import { CardValue } from '../../transactions.types';
+import { CardValue, PaymentMethodValue } from '../../transactions.types';
 import { DateRange } from 'react-day-picker';
 
 const MAX_AMOUNT = 2000;
@@ -105,6 +105,32 @@ export const useFilters = () => {
       ],
     };
 
+    initialState[FilterType.PAYMENT_METHOD] = {
+      checked: false,
+      options: [
+        {
+          value: PaymentMethodValue.LINK,
+          label: 'Link de pago',
+          isSelected: false,
+        },
+        {
+          value: PaymentMethodValue.QR,
+          label: 'Codigo QR',
+          isSelected: false,
+        },
+        {
+          value: PaymentMethodValue.MPOS,
+          label: 'MPOS',
+          isSelected: false,
+        },
+        {
+          value: PaymentMethodValue.POSPRO,
+          label: 'POS Pro',
+          isSelected: false,
+        },
+      ],
+    };
+
     return initialState;
   });
 
@@ -162,6 +188,19 @@ export const useFilters = () => {
 
       filtersFormatted[FilterType.INSTALLMENTS] =
         installmentValues.length > 0 ? installmentValues : [];
+    }
+
+    const paymentMethodState = localFilters[FilterType.PAYMENT_METHOD];
+    if (paymentMethodState) {
+      const paymentMethodValues: PaymentMethodValue[] =
+        paymentMethodState.checked
+          ? paymentMethodState.options
+              .filter(option => option.isSelected)
+              .map(option => option.value as PaymentMethodValue)
+          : [];
+
+      filtersFormatted[FilterType.PAYMENT_METHOD] =
+        paymentMethodValues.length > 0 ? paymentMethodValues : [];
     }
 
     return filtersFormatted;

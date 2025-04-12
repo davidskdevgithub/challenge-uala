@@ -16,6 +16,7 @@ export const useFiltersStore = create<FiltersState>()(set => ({
     [FilterType.CARD]: [],
     [FilterType.AMOUNT]: [],
     [FilterType.INSTALLMENTS]: [],
+    [FilterType.PAYMENT_METHOD]: [],
   },
 
   setFilterValues: (type, values) => {

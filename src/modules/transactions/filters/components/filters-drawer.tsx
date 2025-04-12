@@ -155,6 +155,19 @@ export const FiltersDrawer = () => {
                   handleAmountRange={handleAmountChange}
                 />
               )}
+
+              {localFilters[FilterType.PAYMENT_METHOD] && (
+                <FilterChips
+                  filter={localFilters[FilterType.PAYMENT_METHOD]}
+                  filterType={FilterType.PAYMENT_METHOD}
+                  icon="receipt"
+                  title="Metodos de cobro"
+                  handleCheckedChange={handleCheckedChange}
+                  handleChipSelect={value =>
+                    handleChipSelect(FilterType.PAYMENT_METHOD, value)
+                  }
+                />
+              )}
             </div>
           </div>
 
