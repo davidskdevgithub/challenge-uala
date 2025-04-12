@@ -72,7 +72,7 @@ export const TransaccionTotalPeriod: React.FC<TransactionTotalsPeriodProps> = ({
         data-testid={`period-panel-${activePeriod}`}
       >
         <h2
-          className="text-4xl font-normal text-neutral-hard"
+          className="text-4xl font-light text-neutral-hard"
           data-testid="transaction-amount"
         >
           <span aria-hidden="true">+</span>

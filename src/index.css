@@ -1,7 +1,9 @@
+@import url("https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,100..900;1,100..900&display=swap");
 @import 'tailwindcss';
 @import 'tw-animate-css';
 
 @theme {
+  --font-public-sans: "Public Sans", sans-serif; 
   --color-neutral-hard: #313643;
   --color-neutral: #606882;
   --color-neutral-border: #dee2ec;
@@ -14,7 +16,8 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: system-ui, Avenir, Helvetica, Arial, sans-serif; */
+  font-family: var(--font-public-sans);
   line-height: 1.5;
   font-weight: 400;
 
