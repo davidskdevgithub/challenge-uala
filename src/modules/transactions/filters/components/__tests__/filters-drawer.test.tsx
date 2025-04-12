@@ -26,6 +26,8 @@ vi.mock('../hooks/useFilters', () => ({
     handleChipSelect: vi.fn(),
     handleAmountChange: vi.fn(),
     applyFilters: applyFiltersSpy,
+    isApplyEnabled: false,
+    clearFilters: vi.fn(),
   }),
 }));
 
@@ -239,6 +241,8 @@ describe('FiltersDrawer', () => {
       handleChipSelect: vi.fn(),
       handleAmountChange: vi.fn(),
       applyFilters: applyFiltersSpy, // Use our local spy
+      isApplyEnabled: true,
+      clearFilters: vi.fn(),
     });
 
     render(<FiltersDrawer />);

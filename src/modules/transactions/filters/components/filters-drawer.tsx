@@ -24,20 +24,23 @@ export const FiltersDrawer = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const {
-    storeFilters,
     localFilters,
-    currentFilters,
     handleCheckedChange,
     handleDateSelect,
     handleChipSelect,
     handleAmountChange,
     applyFilters,
+    isApplyEnabled,
+    clearFilters,
   } = useFilters();
-  // debug purpose only, remove later
-  console.log({ storeFilters, localFilters, currentFilters });
 
   const handleApplyFilters = () => {
     applyFilters();
+    setIsOpen(false);
+  };
+
+  const handleClearFilters = () => {
+    clearFilters();
     setIsOpen(false);
   };
 
@@ -101,6 +104,8 @@ export const FiltersDrawer = () => {
               <Button
                 variant="link"
                 className="font-light text-primary-blue text-base"
+                disabled={!isApplyEnabled}
+                onClick={handleClearFilters}
                 aria-label="Clear all filters"
                 data-testid="clear-filters-button"
               >
@@ -175,6 +180,7 @@ export const FiltersDrawer = () => {
             <Button
               className="rounded-3xl h-12 text-base"
               onClick={handleApplyFilters}
+              disabled={!isApplyEnabled}
               aria-label="Apply filters and close"
               data-testid="apply-filters-button"
             >
