@@ -8,6 +8,7 @@ export interface FiltersState {
     type: K,
     values: NonNullable<FiltersStore[K]>,
   ) => void;
+  clearFilters: () => void;
 }
 
 export const useFiltersStore = create<FiltersState>()(set => ({
@@ -26,5 +27,16 @@ export const useFiltersStore = create<FiltersState>()(set => ({
         [type]: values,
       },
     }));
+  },
+
+  clearFilters: () => {
+    set(state => {
+      const clearedFilters = Object.keys(state.toApply).reduce((acc, key) => {
+        acc[key as keyof FiltersStore] = [];
+        return acc;
+      }, {} as FiltersStore);
+
+      return { toApply: clearedFilters };
+    });
   },
 }));

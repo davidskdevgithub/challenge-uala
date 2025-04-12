@@ -14,125 +14,129 @@ import { DateRange } from 'react-day-picker';
 
 const MAX_AMOUNT = 2000;
 
+const createInitialFiltersState = (): FiltersLocal => {
+  const initialState: FiltersLocal = {};
+
+  initialState[FilterType.DATE] = {
+    checked: false,
+    dateRange: {
+      from: undefined,
+      to: undefined,
+    },
+  };
+
+  initialState[FilterType.CARD] = {
+    checked: false,
+    options: [
+      {
+        value: 'todas',
+        label: 'Todas',
+        isSelected: false,
+      },
+      // TODO: replace hardcode values with the real data
+      {
+        value: CardValue.VISA,
+        label: 'Visa',
+        isSelected: false,
+      },
+      {
+        value: CardValue.MASTERCARD,
+        label: 'Mastercard',
+        isSelected: false,
+      },
+      {
+        value: CardValue.AMEX,
+        label: 'American Express',
+        isSelected: false,
+      },
+    ],
+  };
+
+  initialState[FilterType.AMOUNT] = {
+    checked: false,
+    range: {
+      min: 0,
+      max: MAX_AMOUNT,
+    },
+    values: {
+      min: 0,
+      max: MAX_AMOUNT,
+    },
+  };
+
+  initialState[FilterType.INSTALLMENTS] = {
+    checked: false,
+    options: [
+      {
+        value: 'todas',
+        label: 'Todas',
+        isSelected: false,
+      },
+      // TODO: replace hardcode values with the real data
+      {
+        value: 1,
+        label: '1',
+        isSelected: false,
+      },
+      {
+        value: 2,
+        label: '2',
+        isSelected: false,
+      },
+      {
+        value: 3,
+        label: '3',
+        isSelected: false,
+      },
+      {
+        value: 6,
+        label: '6',
+        isSelected: false,
+      },
+      {
+        value: 12,
+        label: '12',
+        isSelected: false,
+      },
+    ],
+  };
+
+  initialState[FilterType.PAYMENT_METHOD] = {
+    checked: false,
+    options: [
+      {
+        value: PaymentMethodValue.LINK,
+        label: 'Link de pago',
+        isSelected: false,
+      },
+      {
+        value: PaymentMethodValue.QR,
+        label: 'Codigo QR',
+        isSelected: false,
+      },
+      {
+        value: PaymentMethodValue.MPOS,
+        label: 'MPOS',
+        isSelected: false,
+      },
+      {
+        value: PaymentMethodValue.POSPRO,
+        label: 'POS Pro',
+        isSelected: false,
+      },
+    ],
+  };
+
+  return initialState;
+};
+
 export const useFilters = () => {
   const storeFilters = useFiltersStore(state => state.toApply);
 
   // Local state to use in the UI
-  const [localFilters, setLocalFilters] = useState<FiltersLocal>(() => {
-    const initialState: FiltersLocal = {};
-
-    initialState[FilterType.DATE] = {
-      checked: false,
-      dateRange: {
-        from: undefined,
-        to: undefined,
-      },
-    };
-
-    initialState[FilterType.CARD] = {
-      checked: false,
-      options: [
-        {
-          value: 'todas',
-          label: 'Todas',
-          isSelected: false,
-        },
-        // TODO: replace hardcode values with the real data
-        {
-          value: CardValue.VISA,
-          label: 'Visa',
-          isSelected: false,
-        },
-        {
-          value: CardValue.MASTERCARD,
-          label: 'Mastercard',
-          isSelected: false,
-        },
-        {
-          value: CardValue.AMEX,
-          label: 'American Express',
-          isSelected: false,
-        },
-      ],
-    };
-
-    initialState[FilterType.AMOUNT] = {
-      checked: false,
-      range: {
-        min: 0,
-        max: MAX_AMOUNT,
-      },
-      values: {
-        min: 0,
-        max: MAX_AMOUNT,
-      },
-    };
-
-    initialState[FilterType.INSTALLMENTS] = {
-      checked: false,
-      options: [
-        {
-          value: 'todas',
-          label: 'Todas',
-          isSelected: false,
-        },
-        // TODO: replace hardcode values with the real data
-        {
-          value: 1,
-          label: '1',
-          isSelected: false,
-        },
-        {
-          value: 2,
-          label: '2',
-          isSelected: false,
-        },
-        {
-          value: 3,
-          label: '3',
-          isSelected: false,
-        },
-        {
-          value: 6,
-          label: '6',
-          isSelected: false,
-        },
-        {
-          value: 12,
-          label: '12',
-          isSelected: false,
-        },
-      ],
-    };
-
-    initialState[FilterType.PAYMENT_METHOD] = {
-      checked: false,
-      options: [
-        {
-          value: PaymentMethodValue.LINK,
-          label: 'Link de pago',
-          isSelected: false,
-        },
-        {
-          value: PaymentMethodValue.QR,
-          label: 'Codigo QR',
-          isSelected: false,
-        },
-        {
-          value: PaymentMethodValue.MPOS,
-          label: 'MPOS',
-          isSelected: false,
-        },
-        {
-          value: PaymentMethodValue.POSPRO,
-          label: 'POS Pro',
-          isSelected: false,
-        },
-      ],
-    };
-
-    return initialState;
-  });
+  const [localFilters, setLocalFilters] = useState<FiltersLocal>(() =>
+    createInitialFiltersState(),
+  );
 
   // Intermadiate state to format the local to the store
   const currentFilters = useMemo(() => {
@@ -319,6 +323,24 @@ export const useFilters = () => {
     }
   }, [currentFilters, setFilterValues]);
 
+  const isApplyEnabled = useMemo(() => {
+    for (const values of Object.values(localFilters)) {
+      if (values?.checked) {
+        return true;
+      }
+    }
+    return false;
+  }, [localFilters]);
+
+  const clearFiltersStore = useFiltersStore(state => state.clearFilters);
+  const clearFilters = useCallback(() => {
+    // Reset all local filters to initial state
+    setLocalFilters(createInitialFiltersState());
+
+    // Clear filters in the store
+    clearFiltersStore();
+  }, [clearFiltersStore, setLocalFilters]);
+
   return {
     storeFilters,
     localFilters,
@@ -330,5 +352,7 @@ export const useFilters = () => {
     handleAmountChange,
 
     applyFilters,
+    isApplyEnabled,
+    clearFilters,
   };
 };
