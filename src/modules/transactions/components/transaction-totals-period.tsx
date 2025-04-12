@@ -1,4 +1,5 @@
 import IconAnalyze from '@/components/icons/icon-analyze';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { Periods } from '../transactions.types';
 
@@ -21,10 +22,6 @@ export const TransaccionTotalPeriod: React.FC<TransactionTotalsPeriodProps> = ({
   error,
 }) => {
   const { entera, decimal } = formatCurrencyToEs(totalAmount);
-
-  if (isLoading) {
-    return <div data-testid="loading-state">Cargando...</div>;
-  }
 
   if (error) {
     return <div data-testid="error-state">Error: {error.message}</div>;
@@ -65,21 +62,25 @@ export const TransaccionTotalPeriod: React.FC<TransactionTotalsPeriodProps> = ({
           </button>
         ))}
       </div>
-      <div
-        role="tabpanel"
-        id={`panel-${activePeriod}`}
-        aria-labelledby={`tab-${activePeriod}`}
-        data-testid={`period-panel-${activePeriod}`}
-      >
-        <h2
-          className="text-4xl font-light text-neutral-hard"
-          data-testid="transaction-amount"
+      {isLoading ? (
+        <Skeleton className="w-52 h-10 rounded-full" />
+      ) : (
+        <div
+          role="tabpanel"
+          id={`panel-${activePeriod}`}
+          aria-labelledby={`tab-${activePeriod}`}
+          data-testid={`period-panel-${activePeriod}`}
         >
-          <span aria-hidden="true">+</span>
-          <span>${entera},</span>
-          <span className="text-2xl">{decimal}</span>
-        </h2>
-      </div>
+          <h2
+            className="text-4xl font-light text-neutral-hard"
+            data-testid="transaction-amount"
+          >
+            <span aria-hidden="true">+</span>
+            <span>${entera},</span>
+            <span className="text-2xl">{decimal}</span>
+          </h2>
+        </div>
+      )}
       <a
         href="#"
         className="flex items-center gap-1 h-12 py-2 px-4 text-primary-blue font-normal text-sm hover:underline transition-colors"

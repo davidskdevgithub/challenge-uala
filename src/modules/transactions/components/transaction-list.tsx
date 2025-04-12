@@ -4,6 +4,7 @@ import { TransactionItem } from './transaction-item';
 import { Transaction } from '../transactions.types';
 
 import IconDownload from '@/components/icons/icon-download';
+import { Skeleton } from '@/components/ui/skeleton';
 
 import { FiltersDrawer } from '../filters/components/filters-drawer';
 
@@ -30,10 +31,6 @@ export const TransactionList: React.FC<TransactionListProps> = ({
       </li>
     ));
   }, [transactions]);
-
-  if (isLoading) {
-    return <div data-testid="loading-state">Loading...</div>;
-  }
 
   if (error) {
     return <div data-testid="error-state">Error: {error.message}</div>;
@@ -66,13 +63,22 @@ export const TransactionList: React.FC<TransactionListProps> = ({
           </div>
         </div>
       </div>
-      <ul
-        className="flex flex-col divide-y divide-neutral-border list-none p-0 mt-2 mx-0 mb-0"
-        role="list"
-        data-testid="transactions-list"
-      >
-        {MemoizedTransactions}
-      </ul>
+      {isLoading ? (
+        Array.from({ length: 10 }).map((_, index) => (
+          <div key={index} className="flex items-center gap-2 px-2 mb-3">
+            <Skeleton className="w-10 h-10 rounded-2xl" />
+            <Skeleton className="w-full h-10 rounded-full" />
+          </div>
+        ))
+      ) : (
+        <ul
+          className="flex flex-col divide-y divide-neutral-border list-none p-0 mt-2 mx-0 mb-0"
+          role="list"
+          data-testid="transactions-list"
+        >
+          {MemoizedTransactions}
+        </ul>
+      )}
     </section>
   );
 };
