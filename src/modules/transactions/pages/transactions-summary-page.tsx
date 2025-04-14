@@ -20,6 +20,7 @@ export const TransactionsSummaryPage = () => {
     <div
       className="container w-xs md:w-md mx-auto md:pt-10 flex flex-col items-stretch gap-8"
       tabIndex={-1}
+      data-testid="transactions-container"
     >
       <TransaccionTotalPeriod
         activePeriod={activePeriod}
