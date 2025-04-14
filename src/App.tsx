@@ -1,4 +1,6 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+import { Layout } from './modules/layout/components/layout';
 import { TransactionsSummaryPage } from './modules/transactions/pages/transactions-summary-page';
 
 const queryClient = new QueryClient({
@@ -13,9 +15,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex items-center justify-center">
+      <Layout>
         <TransactionsSummaryPage />
-      </div>
+      </Layout>
     </QueryClientProvider>
   );
 }
