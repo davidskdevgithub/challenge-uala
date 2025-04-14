@@ -16,7 +16,7 @@ const createMockTransactions = () => {
   yesterday.setDate(yesterday.getDate() - 1);
   const lastMonth = new Date(today);
   lastMonth.setMonth(lastMonth.getMonth() - 1);
-  
+
   return [
     {
       id: '1',
@@ -25,7 +25,7 @@ const createMockTransactions = () => {
       paymentMethod: PaymentMethodValue.LINK,
       card: CardValue.VISA,
       installments: 1,
-      updatedAt: today.toISOString()
+      updatedAt: today.toISOString(),
     },
     {
       id: '2',
@@ -34,7 +34,7 @@ const createMockTransactions = () => {
       paymentMethod: PaymentMethodValue.MPOS,
       card: CardValue.MASTERCARD,
       installments: 3,
-      updatedAt: yesterday.toISOString()
+      updatedAt: yesterday.toISOString(),
     },
     {
       id: '3',
@@ -43,13 +43,13 @@ const createMockTransactions = () => {
       paymentMethod: PaymentMethodValue.QR,
       card: CardValue.AMEX,
       installments: 6,
-      updatedAt: lastMonth.toISOString()
-    }
+      updatedAt: lastMonth.toISOString(),
+    },
   ];
 };
 
 describe('useTransactions', () => {
-let mockTransactions: ReturnType<typeof createMockTransactions>;
+  let mockTransactions: ReturnType<typeof createMockTransactions>;
 
   beforeEach(() => {
     // Reset all mocks before each test
@@ -144,39 +144,39 @@ let mockTransactions: ReturnType<typeof createMockTransactions>;
 
   it('updates totalAmount when changing period', () => {
     const { result } = renderHook(() => useTransactions());
-    
+
     // Store the initial total amount (WEEKLY)
     const initialAmount = result.current.totalAmount;
-    
+
     // Change to DAILY
     act(() => {
       result.current.setActivePeriod(Periods.DAILY);
     });
-    
+
     // Store DAILY amount
     const dailyAmount = result.current.totalAmount;
-    
+
     // Change to MONTHLY
     act(() => {
       result.current.setActivePeriod(Periods.MONTHLY);
     });
-    
+
     // Store MONTHLY amount
     const monthlyAmount = result.current.totalAmount;
-    
+
     // Verify that totalAmount changes when period changes
     // We expect DAILY to only include transactions from today
     // We expect MONTHLY to include all transactions
-    
+
     // Different periods should produce different totals
     expect(dailyAmount).not.toBe(initialAmount);
     expect(monthlyAmount).not.toBe(dailyAmount);
-    
+
     // Log the values to help with debugging
     console.log({
       weekly: initialAmount,
-      daily: dailyAmount, 
-      monthly: monthlyAmount
+      daily: dailyAmount,
+      monthly: monthlyAmount,
     });
   });
 
