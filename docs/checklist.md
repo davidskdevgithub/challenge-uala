@@ -2,26 +2,26 @@
 
 - Configuration
 
-  - [ ] Create Vite app
-  - [ ] Push repo to GitHub
-  - [ ] Create a new project on Vercel
-  - [ ] Add secrets in GitHub
-  - [ ] Setup CI/CD
-  - [ ] Settings for VsCode
-  - [ ] Add new rules to ESLint
-  - [ ] Tailwind CSS
-  - [ ] Shadcn UI
-  - [ ] Lucide React
-  - [ ] Vitest
-  - [ ] Zustand
-  - [ ] React Query
+  - [x] Create Vite app
+  - [x] Push repo to GitHub
+  - [x] Create a new project on Vercel
+  - [x] Add secrets in GitHub
+  - [x] Setup CI/CD
+  - [x] Settings for VsCode
+  - [x] Add new rules to ESLint
+  - [x] Tailwind CSS
+  - [x] Shadcn UI
+  - [x] Lucide React
+  - [x] Vitest
+  - [x] Zustand
+  - [x] React Query
   - [ ] Playwright
 
 - Features
-  - [ ] Display
+  - [x] Display
     - History
     - Totals (current day, week or month)
-  - [ ] Filter
+  - [x] Filter
     - Date
       - Always in 2025
     - Amount
