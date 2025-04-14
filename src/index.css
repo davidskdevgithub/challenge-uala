@@ -11,6 +11,10 @@
   --color-success: #1c8367;
   --color-primary-blue: #022a9a;
   --color-primary-blue-light: #E7EEFF;
+  --color-gray: #fafafa;
+  --shadow-sidebar: 10px 0px 31px 0px rgba(231, 238, 255, 0.5);
+  --shadow-drawer: 0px 4px 16px 0px rgba(49, 54, 67, 0.2);
+  --shadow-header: 0px 8px 20px 0px rgba(231, 238, 255, 0.5);
 }
 
 @custom-variant dark (&:is(.dark *));
@@ -63,16 +67,21 @@
   --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
-#root {
-  margin: 0 auto;
-}
-
 body {
   margin: 0;
   display: flex;
   place-items: center;
+  width: 100%;
   min-width: 320px;
   min-height: 100vh;
+}
+
+#root {
+  width: 100%;
+}
+
+main {
+  margin: 0 auto;
 }
 
 p {

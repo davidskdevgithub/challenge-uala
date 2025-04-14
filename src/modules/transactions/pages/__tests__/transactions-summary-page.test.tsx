@@ -104,9 +104,9 @@ describe('TransactionsSummaryPage', () => {
   it('renders the main container with correct attributes', () => {
     render(<TransactionsSummaryPage />, { wrapper: createWrapper() });
 
-    const main = screen.getByRole('main');
-    expect(main).toBeDefined();
-    expect(main.getAttribute('tabIndex')).toBe('-1');
+    const container = screen.getByTestId('transactions-container');
+    expect(container).toBeDefined();
+    expect(container.getAttribute('tabIndex')).toBe('-1');
   });
 
   it('renders the TransaccionTotalPeriod component with correct props', () => {
