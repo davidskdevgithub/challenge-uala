@@ -29,7 +29,7 @@ export class MockiApiTransactions {
 
   public async getAllData(): Promise<TransactionsResponse> {
     return await this.fetchFromMocki<TransactionsResponse>(
-      '20750350-0eb9-4985-a2cf-49cab293cb2d',
+      'd0de9e5a-75db-4fd9-9ba7-500a97e92800',
       'Error fetching all metadata',
     );
   }
